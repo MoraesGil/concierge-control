@@ -9,7 +9,7 @@ class Usuario extends Authenticatable
 {
   protected $fillable = ['permissao', 'login', 'senha'];
 
-  protected $hidden = ['senha'];
+  protected $hidden = ['senha','remember_token'];
 
   public function dados_pessoais()
   {

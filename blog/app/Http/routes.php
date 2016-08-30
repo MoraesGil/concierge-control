@@ -11,6 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//   return view('welcome');
+// });
+//
+
+Route::group(['middleware'=>'custom'], function () {
+  Route::get('/home','UsuarioCtrl@index');
+
+  Route::get('/login','UsuarioCtrl@login');
+  Route::post('/login','UsuarioCtrl@postLogin');
+  Route::get('/sair','UsuarioCtrl@sair');
 });
