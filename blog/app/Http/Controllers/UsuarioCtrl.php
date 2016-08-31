@@ -12,7 +12,7 @@ use App\Usuario;
 class UsuarioCtrl extends Controller
 {
   public function index(){
-    return view('home');
+    return redirect('/moradores');
   }
 
   public function login(){

@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Endereco extends Model
 {
-  // id, logradouro, numero, cep, condominio_id
+  // id, pessoa_id, logradouro, numero, bairro, complemento, cep, condominio_id
   protected $fillable =
-  ['logradouro', 'numero', 'cep', 'condominio_id'];
+  ['pessoa_id', 'logradouro', 'numero', 'bairro', 'complemento', 'cep', 'condominio_id'];
 
   public $timestamps = false;
 

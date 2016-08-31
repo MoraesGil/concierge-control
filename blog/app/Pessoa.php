@@ -12,11 +12,17 @@ class Pessoa extends Model
 
   public $timestamps = false;
 
+  public function moradores()
+  {
+    return $this->whereIn('usuario_id',
+    \DB::table('usuarios')->where('desativado_em',null)->where('permissao','m')->distinct()->pluck('id')
+    )->get();
+  }
 
   public function dependentes()
   {
     return $this->hasMany('App\Pessoa','responsavel_id');
-  } 
+  }
 
   public function contatos()
   {
