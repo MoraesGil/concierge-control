@@ -1,0 +1,37 @@
+{
+  "name": "vue-bootstrap-pagination",
+  "description": "Pagination for vuejs with combination with bootstrap and Laravel's pagination",
+  "main": "vue-bootstap-pagination.js",
+  "authors": [
+    "pogachar"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "component",
+    "bootstrap",
+    "laravel",
+    "pagination"
+  ],
+  "homepage": "https://github.com/Media24si/vue-pagination",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src"
+  ],
+  "version": "1.10.0",
+  "_release": "1.10.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.10.0",
+    "commit": "f0876b4cf854716ff9d05a605abe05ffccdde47c"
+  },
+  "_source": "https://github.com/Media24si/vue-pagination.git",
+  "_target": "^1.10.0",
+  "_originalSource": "vue-bootstrap-pagination",
+  "_direct": true
+}
