@@ -5,44 +5,41 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\CondominoRequest;
+use App\Http\Requests\PorteiroRequest;
 use App\Pessoa;
 use App\Usuario;
 use App\Condominio;
 
-class CondominoCtrl extends Controller
+class PorteiroCtrl extends Controller
 {
   public function __construct(Pessoa $p, Condominio $c, Usuario $u){
     $this->PessoaModel = $p;
     $this->CondominioModel = $c;
     $this->UsuarioModel = $u;
     $this->pagLimit = 7;
-
   }
 
   public function index(Request $request){
     $filtro = $request->get('busca');
 
     if ($filtro) {
-      $retorno = $this->PessoaModel->moradores()
+      $retorno = $this->PessoaModel->porteiros()
       ->where("nome", "LIKE", "%$filtro%")
       ->orWhere("cpf", "LIKE", "%$filtro%")
       ->paginate($this->pagLimit);
     }else {
-      $retorno = $this->PessoaModel->moradores()->paginate($this->pagLimit);
+      $retorno = $this->PessoaModel->porteiros()->paginate($this->pagLimit);
     }
 
-    return view('condominos.list',['moradores'=>$retorno]);
+    return view('porteiros.list',['porteiros'=>$retorno]);
   }
 
 
   public function create(){
-    return view('condominos.form',['condominios'=>$this->CondominioModel->lists('nome','id')]);
+    return view('porteiros.form',['condominios'=>$this->CondominioModel->lists('nome','id')]);
   }
 
-  public function store(CondominoRequest $request){
-
-    // dd($request->all());
+  public function store(PorteiroRequest $request){
 
     $cpf3 = substr($request->get('cpf'), 0, 3);//3 primeiros digitos cpf
 
@@ -54,68 +51,37 @@ class CondominoCtrl extends Controller
 
     //cria usuario
     $novo_usuario = $this->UsuarioModel->create([
-      'permissao'=>'m', 'login'=>strtolower($login), 'senha'=>$senha
+      'permissao'=>'p', 'login'=>strtolower($login), 'senha'=>$senha
     ]);
 
     //grava dados pessoais
     $novo_usuario->dados_pessoais()->create($request->only('nome', 'rg','cpf'));
     //grava contatos pessoais
-    $novo_usuario->dados_pessoais->contatos()->create($request->only('telefone', 'celular','email'));
+    $novo_usuario->dados_pessoais->contatos()->create($request->only('telefone', 'celular'));
 
     //grava endereco pessoais
     $novo_usuario->dados_pessoais->endereco()->create($request->only('logradouro', 'numero','bairro','cidade','cep','condominio_id'));
 
 
-    \Session::flash('success_message','Morador cadastrado!');
+    \Session::flash('success_message','Porteiro cadastrado!');
 
 
-    return redirect('morador/novo');
+    return redirect('Porteiro/novo');
   }
 
   public function edit($id){
 
-    $morador = $this->PessoaModel->moradores()->find($id);
+    $porteiro = $this->PessoaModel->porteiros()->find($id);
 
-    if (!$morador) {
-      return redirect('moradores');
+    if (!$porteiro) {
+      return redirect('porteiros');
     }
 
     $data = array(
-      'morador'=>$this->transform_pessoa($morador),
+      'porteiro'=>$this->transform_pessoa($porteiro),
       'condominios'=>$this->CondominioModel->lists('nome','id')
     );
-    return view('condominos.form',$data);
-  }
-
-  public function update(CondominoRequest $request, $id){
-
-    $morador = $this->PessoaModel->moradores()->find($id);
-    if (!$morador) {
-      return redirect('moradores');
-    }
-
-    //atualiza dados pessoais
-    $morador->update($request->only('nome', 'rg','cpf'));
-    //atualiza contatos pessoais
-    $morador->contatos()->update($request->only('telefone', 'celular','email'));
-    //atualiza endereco pessoais
-    $morador->endereco()->update($request->only('logradouro', 'numero','bairro','cidade','cep','condominio_id'));
-
-
-    \Session::flash('success_message','Morador atualizado!');
-    return redirect('morador/'.$id.'/editar');
-  }
-
-  public function destroy($id){
-    // usuario com pessoa de id = $id
-    $morador =  $this->PessoaModel->find($id);
-    if (!$morador) {
-      return redirect('moradores');
-    }
-
-    $morador->usuario->forceDelete();
-    \Session::flash('success_message','Morador excluido!');
-    return redirect('moradores');
+    return view('porteiros.form',$data);
   }
 
   private function transform_pessoa($pessoa){
@@ -126,7 +92,6 @@ class CondominoCtrl extends Controller
     $pessoa_retorno->cpf = $pessoa->cpf;
     $pessoa_retorno->telefone = $pessoa->contatos->telefone;
     $pessoa_retorno->celular = $pessoa->contatos->celular;
-    $pessoa_retorno->email = $pessoa->contatos->email;
     $pessoa_retorno->cep = $pessoa->endereco->cep;
     $pessoa_retorno->logradouro = $pessoa->endereco->logradouro;
     $pessoa_retorno->numero = $pessoa->endereco->numero;
@@ -136,18 +101,52 @@ class CondominoCtrl extends Controller
     return $pessoa_retorno;
   }
 
+
+  public function update(PorteiroRequest $request, $id){
+
+    $porteiro = $this->PessoaModel->porteiros()->find($id);
+    if (!$porteiro) {
+      return redirect('porteiros');
+    }
+
+    //atualiza dados pessoais
+    $porteiro->update($request->only('nome', 'rg','cpf'));
+    //atualiza contatos pessoais
+    $porteiro->contatos()->update($request->only('telefone', 'celular'));
+    //atualiza endereco pessoais
+    $porteiro->endereco()->update($request->only('logradouro', 'numero','bairro','cidade','cep','condominio_id'));
+
+
+    \Session::flash('success_message','Porteiro atualizado!');
+    return redirect('Porteiro/'.$id.'/editar');
+  }
+
+  public function destroy($id){
+    // usuario com pessoa de id = $id
+    $porteiro =  $this->PessoaModel->find($id);
+    if (!$porteiro) {
+      return redirect('porteiros');
+    }
+
+    $porteiro->usuario->forceDelete();
+    \Session::flash('success_message','Porteiro excluido!');
+    return redirect('porteiros');
+  }
+
+
+
   public function changeStatus($id){
     // usuario com pessoa de id = $id
-    $morador =    $this->PessoaModel->find($id);
-    if (!$morador) {
-      return redirect('moradores');
+    $porteiro =    $this->PessoaModel->find($id);
+    if (!$porteiro) {
+      return redirect('porteiros');
     }
-    if($morador->usuario->desativado_em){
-      $morador->usuario->restore();
+    if($porteiro->usuario->desativado_em){
+      $porteiro->usuario->restore();
     }else {
-      $morador->usuario->delete();
+      $porteiro->usuario->delete();
     }
-    return redirect('moradores');
+    return redirect('porteiros');
   }
 
 

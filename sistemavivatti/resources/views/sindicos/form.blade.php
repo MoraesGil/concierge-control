@@ -6,7 +6,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Gerenciamento de Condôminos</h3>
+          <h3>Gerenciamento de Sindicos</h3>
         </div>
 
       </div>
@@ -18,14 +18,14 @@
             <div class="x_title">
               <h2>{{  Request::is('*/editar') ? "Alteração": "Cadastro" }}</h2>
               <ul class="nav navbar-right panel_toolbox">
-                <li class="list"><a data-toggle="tooltip" data-placement="left" title="Listar" class="collapse-link" title="Listar" href="{{url('moradores')}}"><i class="fa fa-list"></i> Moradores</a></li>
+                <li class="list"><a data-toggle="tooltip" data-placement="left" title="Listar" class="collapse-link" title="Listar" href="{{url('sindicos')}}"><i class="fa fa-list"></i> sindicos</a></li>
               </li>
             </ul>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
 
-            <p>Para listar os moradores cadastrados, clique no botão na barra acima</p>
+            <p>Para listar os sindicos cadastrados, clique no botão na barra acima</p>
             <span class="section">Dados pessoais</span>
 
             @if(Session::has('success_message'))
@@ -50,10 +50,10 @@
 
             @if(Request::is('*/editar'))
               {{-- editando PUT --}}
-              {!! Form::model($morador, ['url' => 'morador/'.$morador->id.'/editar','class' => 'form-horizontal form-label-left', 'method' => 'PUT']) !!}
+              {!! Form::model($sindico, ['url' => 'sindico/'.$sindico->id.'/editar','class' => 'form-horizontal form-label-left', 'method' => 'PUT']) !!}
             @else
               {{-- incluindo POST --}}
-              {!! Form::open(['url' => 'morador/novo', 'class' => 'form-horizontal form-label-left']) !!}
+              {!! Form::open(['url' => 'sindico/novo', 'class' => 'form-horizontal form-label-left']) !!}
             @endif
 
             {{-- DADOS PESSOAIS --}}
@@ -97,14 +97,6 @@
               {!! Form::label('celular', 'Celular:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! Form::text('celular', null, ['class'=>'form-control col-md-7 ']) !!}
-              </div>
-            </div>
-
-            <!-- celular Form Input -->
-            <div class="form-group">
-              {!! Form::label('email', 'E-Mail:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('email', null, ['class'=>'form-control col-md-7 ']) !!}
               </div>
             </div>
 
@@ -154,7 +146,7 @@
 
             <!-- Condominio Form Input -->
             <div class="item form-group">
-              {!! Form::label('condominio_id', 'Condominio:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+              {!! Form::label('condominio_id', 'Condominio onde trabalha:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
                 {{ Form::select('condominio_id', $condominios, null, ['class' => 'form-control col-md-7 col-xs-12']) }}
               </div>
@@ -163,7 +155,7 @@
             <div class="ln_solid"></div>
             <div class="form-group">
               <div class="col-md-6 col-md-offset-3">
-                <a class="btn btn-primary" href="{{url('/moradores')}}">Cancelar</a>
+                <a class="btn btn-primary" href="{{url('/sindicos')}}">Cancelar</a>
 
                 <button id="send" type="submit" name="send" class="btn btn-success">Gravar</button>
               </div>

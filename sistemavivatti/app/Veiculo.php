@@ -8,5 +8,7 @@ class Veiculo extends Model
 {
   // id, pessoa_id, placa
   protected $fillable = ['placa'];
- 
+
+  public $timestamps = false;
+
 }

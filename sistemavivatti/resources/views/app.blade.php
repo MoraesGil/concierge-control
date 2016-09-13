@@ -18,6 +18,7 @@
   <link href="{{url('/build/css/custom.min.css')}}" rel="stylesheet">
 
   <link href="{{url('/assets/css/sweetalert.css')}}" rel="stylesheet">
+  <link href="{{url('/assets/css/pickout.min.css')}}" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -59,39 +60,36 @@
               <ul class="nav side-menu">
                 <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="index.php">Início</a></li>
-                    <li><a href="javascript:;">Em desenvolvimento</a></li>
-                    <li><a href="javascript:;">Em desenvolvimento</a></li>
+                    <li><a href="{{url('/home')}}">Inicio</a></li>
+                    <li><a href="{{url('/sindicos')}}">Sindícos</a></li>
                   </ul>
                 </li>
                 <li><a><i class="fa fa-male"></i> Síndico <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="?p=condominos">Condôminos</a></li>
-                    <li><a href="?p=porteiros">Porteiros</a></li>
-                    <li><a href="javascript:;">Reserva de Salão</a></li>
-                    <li><a href="javascript:;">Livro de Acesso</a></li>
-                    <li><a href="javascript:;">Mural de Recados</a></li>
-                    <li><a href="javascript:;">Contratos</a></li>
-                    <li><a href="javascript:;">Fale com o síndico</a></li>
-                    <li><a href="javascript:;">Visitantes</a></li>
+                    <li><a href="{{url('/moradores')}}">Moradores</a></li>
+                    <li><a href="{{url('/porteiros')}}">Porteiros</a></li>
+                    <li><a href="{{url('/reservas')}}">Reserva de Salão</a></li>
+                    <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
+                    <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
+                    <li><a href="{{url('/eventos')}}">Calendário Eventos</a></li>
                   </ul>
                 </li>
                 <li><a><i class="fa fa-map-marker"></i> Portaria <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="javascript:;">Calendário Eventos</a></li>
-                    <li><a href="?p=livro-de-acesso">Livro de Acesso</a></li>
-
+                    <li><a href="{{url('/eventos')}}">Calendário Eventos</a></li>
+                    <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
+                    <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
                   </ul>
                 </li>
-                <li><a><i class="fa fa-table"></i> Condôminos <span class="fa fa-chevron-down"></span></a>
+                <li>
+                  <a><i class="fa fa-table"></i> Condôminos <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="javascript:;">Reserva de Salão</a></li>
-                    <li><a href="javascript:;">Livro de Portaria</a></li>
-                    <li><a href="javascript:;">Formulário de Registro</a></li>
+                    <li><a href="{{url('/reservas')}}">Reserva de Salão</a></li>
+                    <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
+                    <li><a href="{{url('/contrato')}}">Download Contrato</a></li>
                     <li><a href="javascript:;">2ª via Boleto (OFF)</a></li>
                   </ul>
                 </li>
-
               </ul>
             </div>
             <div class="menu_section">
@@ -161,11 +159,12 @@
   <!-- Custom Theme Scripts -->
   <script src="{{url('/build/js/custom.min.js')}}"></script>
   <script src="{{url('/assets/js/sweetalert.min.js')}}"></script>
+  <script src="{{url('/assets/js/spickout.min.js')}}"></script>
   <!-- VUE JS Sripts -->
   <script src="{{url('/assets/js/vue.min.js')}}"></script>
   <script src="{{url('/assets/js/vue-resource.min.js')}}"></script>
   <script src="{{url('/assets/js/vue-strap.min.js')}}"></script>
-  
+
   @stack('script_level')
 
 </script>

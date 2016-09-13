@@ -17,6 +17,16 @@ class Usuario extends Authenticatable
     return $this->hasOne('App\Pessoa');
   }
 
+  public function solicitacoes()
+  {
+    return $this->hasMany('App\Solicitacao');
+  }
+
+  public function reservas()
+  {
+    return $this->hasMany('App\Reserva');
+  }
+
   const CREATED_AT = 'criado_em';
   const UPDATED_AT = 'atualizado_em';
   const DELETED_AT = 'desativado_em';

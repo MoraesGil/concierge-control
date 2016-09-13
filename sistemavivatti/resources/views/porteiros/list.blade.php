@@ -6,7 +6,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Gerenciamento de Moradores </h3>
+          <h3>Gerenciamento de Porteiros </h3>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -17,7 +17,7 @@
             <div class="x_title">
               <h2>Relação</h2>
               <ul class="nav navbar-right panel_toolbox">
-                <li class="list"><a href="{{url('morador/novo')}}">NOVO <i class="fa fa-plus"></i></a>
+                <li class="list"><a href="{{url('porteiro/novo')}}">NOVO <i class="fa fa-plus"></i></a>
                 </li>
               </ul>
               <div class="clearfix">
@@ -44,40 +44,34 @@
                       <th>Nome</th>
                       <th>CPF</th>
                       <th>Telefone</th>
-                      <th style="text-align:center;">Quantidade Dependentes</th>
+                      <th style="text-align:center;">Condominio</th>
                       <th style="text-align:center"> status </th>
                       <th style="text-align:center"> Opções </th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($moradores as  $morador)
+                    @foreach($porteiros as  $porteiro)
                       <tr>
-                        <td scope="row">{{$morador->id}}</td>
-                        <td>{{$morador->nome}}</td>
-                        <td>{{$morador->cpf}}</td>
-                        <td>{{$morador->contatos->telefone }}</td>
+                        <td scope="row">{{$porteiro->id}}</td>
+                        <td>{{$porteiro->nome}}</td>
+                        <td>{{$porteiro->cpf}}</td>
+                        <td>{{$porteiro->contatos->telefone }}</td>
+                        <td>{{$porteiro->endereco->condominio->nome }}</td>
                         <td style="text-align:center">
-                          <a href="{{url('morador/'.$morador->id.'/dependentes')}}" data-toggle="tooltip" data-placement="top" title="Ver dependentes">
-                            {{$morador->total_dependentes}}
-                          </a>
-                        </td>
-                        <td style="text-align:center">
-                          @if(!$morador->usuario->desativado_em)
-                            <a href="{{url('morador/'.$morador->id.'/alterarStatus')}}" class="btn btn-default btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Ativo">
+                          @if(!$porteiro->usuario->desativado_em)
+                            <a href="{{url('porteiro/'.$porteiro->id.'/alterarStatus')}}" class="btn btn-default btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Ativo">
                               <i class="fa fa-thumbs-o-up"></i>
                             </a>
                           @else
-                            <a href="{{url('morador/'.$morador->id.'/alterarStatus')}}" class="btn btn-default btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Desativado">
+                            <a href="{{url('porteiro/'.$porteiro->id.'/alterarStatus')}}" class="btn btn-default btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Desativado">
                               <i class="fa fa-thumbs-o-down"></i>
                             </a>
                           @endif
                         </td>
                         <td style="text-align:center">
-                          <a @click="loadContratos('{{$morador->id}}')" data-toggle="modal" data-target="#myModal" class="btn btn-default btn-xs"> <i class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Contrato"></i></a>
+                          <a href="{{url('porteiro/'.$porteiro->id.'/editar')}}" class="btn btn-default btn-xs"> <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Alterar"></i></a>
 
-                          <a href="{{url('morador/'.$morador->id.'/editar')}}" class="btn btn-default btn-xs"> <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Alterar"></i></a>
-
-                          <a @click.prevent="excluir('{{$morador->id}}')" href="#" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
+                          <a @click.prevent="excluir('{{$porteiro->id}}')" href="#" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
                             <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
                           </a>
                         </td>
@@ -86,7 +80,7 @@
                   </tbody>
                 </table>
 
-                <span class="pull-right"> {{ $moradores->links() }} </span>
+                <span class="pull-right"> {{ $porteiros->links() }} </span>
               </div>
 
             </div>
@@ -102,7 +96,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Contrato do Morador</h4>
+          <h4 class="modal-title" id="myModalLabel">Contrato do porteiro</h4>
         </div>
         <div class="modal-body">
 
@@ -145,13 +139,10 @@
     },
 
     methods:{
-      loadContratos:function(morador_id){
-
-      },
-      excluir:function(morador_id){
+      excluir:function(porteiro_id){
         swal({
           title: "Tem certeza?",
-          text: "Isso ira deletar permanentemente este morador e todos registros relacionados a ele.",
+          text: "Isso ira deletar permanentemente este porteiro e todos registros relacionados a ele.",
           type: "warning",
           showCancelButton: true,
           confirmButtonClass: "btn-danger",
@@ -159,21 +150,7 @@
           cancelButtonText: "Cancelar",
           closeOnConfirm: false
         },function(){
-          window.location.href =  "/morador/"+morador_id+"/excluir";
-        });
-      },
-      excluirContrato:function(morador_id){
-        swal({
-          title: "Tem certeza?",
-          text: "Isso ira excluir permanentemente este contrato",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Sim, pode excluir!",
-          cancelButtonText: "Cancelar",
-          closeOnConfirm: false
-        },function(){
-          window.location.href =  "/morador/"+morador_id+"/excluir";
+          window.location.href =  "/porteiro/"+porteiro_id+"/excluir";
         });
       }
     }

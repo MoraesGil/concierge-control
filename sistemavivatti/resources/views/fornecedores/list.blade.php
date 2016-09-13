@@ -6,7 +6,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Gerenciamento de Moradores </h3>
+          <h3>Gerenciamento de Fornecedores </h3>
         </div>
       </div>
       <div class="clearfix"></div>
