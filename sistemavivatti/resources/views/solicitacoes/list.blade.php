@@ -6,7 +6,7 @@
     <div class="col-md-3">
       <div class="page-title">
         <div class="title_left">
-          <h3>Recado</h3>
+          <h3>Solicitação</h3>
         </div>
 
       </div>
@@ -21,7 +21,22 @@
           </div>
           <div class="x_content">
             {{-- incluindo POST --}}
-            {!! Form::open(['url' => 'recado/novo', 'class' => 'form-horizontal form-label-left']) !!}
+            {!! Form::open(['url' => 'solicitacao/novo', 'class' => 'form-horizontal form-label-left']) !!}
+
+            <div class="form-group">
+              {!! Form::label('tipo', 'Tipo:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+              {!! Form::select('tipo',['1' => 'Outros', '2' => 'Reclamações', '3' => 'Problemas'], null, ['class'=>'form-control col-md-12 ','autofocus']) !!}
+            </div>
+
+            <div class="form-group">
+              {!! Form::label('prioridade', 'Prioridade:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+              {!! Form::select('prioridade',['0' => 'Normal', '1' => 'Média', '2' => 'Alta'], null, ['class'=>'form-control col-md-12 ','autofocus']) !!}
+            </div>
+
+            <div class="form-group">
+              {!! Form::label('anonimo', 'Anônimo:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+              {!! Form::select('anonimo',['0' => 'Não', '1' => 'Sim'], null, ['class'=>'form-control col-md-12 ','autofocus']) !!}
+            </div>
 
             <div class="form-group">
               {!! Form::label('titulo', 'Titulo:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
@@ -68,7 +83,7 @@
   <div class="col-md-9">
     <div class="page-title">
       <div class="title_left">
-        <h3>Mural de Recados</h3>
+        <h3>Mural de Solicitações</h3>
       </div>
     </div>
     <div class="clearfix"></div>
@@ -101,23 +116,43 @@
                   <div class="dashboard-widget-content">
 
                     <ul class="list-unstyled timeline widget">
-                      @foreach($recados as $recado)
+                      @foreach($solicitacoes as $solicitacao)
                         <li>
                           <div class="block">
                             <div class="block_content">
                               <h2 class="title">
-                                {{$recado->titulo}}
-                                @if( auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' || auth()->user()->id == $recado->usuario->id )
-                                  <a @click.prevent="excluir('{{$recado->id}}')" href="#" class="btn btn-xs btn-default pull-right " data-toggle="confirmation" data-placement="bottom" data-original-title="" title="Excluir">
-                                    <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
-                                  </a>
-                                @endif
+                                {{$solicitacao->titulo}}({{$solicitacao->tipo}})
+                                <div class="pull-right">
+                                  @if($solicitacao->prioridade == 0)
+                                    <button type="button" class="btn btn-info btn-xs">Normal</button>
+                                  @elseif($solicitacao->prioridade == 1)
+                                    <button type="button" class="btn btn-warning btn-xs">Média</button>
+                                  @else
+                                    <button type="button" class="btn btn-danger btn-xs">Alta</button>
+                                  @endif
+
+                                  @if(!$solicitacao->finalizado_em)
+                                    @if(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' || auth()->user()->id == $solicitacao->usuario->id)
+                                      <a @click.prevent="finalizar('{{$solicitacao->id}}')" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Está em Aberto clique para Finalizar">Finalizar</a>
+                                    @else
+                                      <button type="button" class="btn btn-default btn-xs">Aberto</button>
+                                    @endif
+                                  @else
+                                    <button type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="Encerrado em {{$solicitacao->finalizado_em}}">Finalizado</button>
+                                  @endif
+
+                                  @if( auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' || auth()->user()->id == $solicitacao->usuario->id )
+                                    <a class="btn btn-xs btn-default" @click.prevent="excluir('{{$solicitacao->id}}')" href="#"  data-toggle="confirmation" data-placement="bottom" data-original-title="" title="Excluir">
+                                      <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
+                                    </a>
+                                  @endif
+                                </div>
+
                               </h2>
                               <div class="byline">
-                                <span>{{$recado->criado_em}}</span> por <a>  {{ $recado->usuario->id == auth()->user()->id ? 'Mim' : $recado->usuario->dados_pessoais->nome}}</a>
+                                <span>{{$solicitacao->criado_em}}</span> por <a>  {{ $solicitacao->usuario->id == auth()->user()->id ? 'Mim' : $solicitacao->anonimo ? "Anônimo" : $solicitacao->usuario->dados_pessoais->nome}}</a>
                               </div>
-
-                              <p class="excerpt">{{$recado->descricao}}
+                              <p class="excerpt">{{$solicitacao->descricao}}
                               </p>
                             </div>
                           </div>
@@ -128,7 +163,7 @@
                 </div>
               </div>
 
-              <span class="pull-right"> {{ $recados->links() }} </span>
+              <span class="pull-right"> {{ $solicitacoes->links() }} </span>
             </div>
 
           </div>
@@ -157,10 +192,24 @@
     },
 
     methods:{
-      excluir:function(recado_id){
+      finalizar:function(solicitacao_id){
+        swal({
+          title: "A solicitação foi atendida?",
+          text: "Gostaria de alterar para encerrado essa solicitação ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Sim, pode alterar!",
+          cancelButtonText: "Cancelar",
+          closeOnConfirm: false
+        },function(){
+          window.location.href =  "/solicitacao/"+solicitacao_id+"/finalizar";
+        });
+      },
+      excluir:function(solicitacao_id){
         swal({
           title: "Tem certeza?",
-          text: "Este recado será permanentemente excluido, deseja prosseguir?",
+          text: "Este solicitacao será permanentemente excluido, deseja prosseguir?",
           type: "warning",
           showCancelButton: true,
           confirmButtonClass: "btn-danger",
@@ -168,7 +217,7 @@
           cancelButtonText: "Cancelar",
           closeOnConfirm: false
         },function(){
-          window.location.href =  "/recado/"+recado_id+"/excluir";
+          window.location.href =  "/solicitacao/"+solicitacao_id+"/excluir";
         });
       }
     }

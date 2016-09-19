@@ -35,18 +35,15 @@
           <!-- menu profile quick info -->
           <div class="profile">
             <div class="profile_pic">
-
               @if(auth()->user()->dados_pessoais->foto_url)
                 <img src="{{url('uploads/pessoas') .  auth()->user()->dados_pessoais->foto_url }}" alt="..." class="img-circle profile_img">
               @else
                 <img src="{{url('uploads/pessoas/default.png')}}" alt="..." class="img-circle profile_img">
               @endif
-
             </div>
             <div class="profile_info">
               <span>Bem vindo,</span>
               <h2>{{auth()->user()->dados_pessoais->nome }}</h2>
-
             </div>
           </div>
           <!-- /menu profile quick info -->
@@ -74,6 +71,7 @@
                     <li><a href="{{url('/eventos')}}">Calendário Eventos</a></li>
                     <li><a href="{{url('/servicos')}}">Serviços</a></li>
                     <li><a href="{{url('/prestadores')}}">Prestadores de Serviços</a></li>
+                    <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
                   </ul>
                 </li>
                 <li><a><i class="fa fa-map-marker"></i> Portaria <span class="fa fa-chevron-down"></span></a>
@@ -83,6 +81,7 @@
                     <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
                     <li><a href="{{url('/servicos')}}">Serviços</a></li>
                     <li><a href="{{url('/prestadores')}}">Prestadores de Serviços</a></li>
+                    <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
                   </ul>
                 </li>
                 <li>
@@ -91,6 +90,7 @@
                     <li><a href="{{url('/reservas')}}">Reserva de Salão</a></li>
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                     <li><a href="{{url('/contrato')}}">Download Contrato</a></li>
+                    <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
                     <li><a href="javascript:;">2ª via Boleto (OFF)</a></li>
                   </ul>
                 </li>

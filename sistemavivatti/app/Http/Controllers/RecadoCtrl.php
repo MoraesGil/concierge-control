@@ -21,7 +21,7 @@ class RecadoCtrl extends Controller
     if ($filtro) {
       $retorno =   $this->RecadoModel
       ->where("titulo", "LIKE", "%$filtro%")
-      ->where("descricao", "LIKE", "%$filtro%")
+      ->orWhere("descricao", "LIKE", "%$filtro%")
       ->orderBy('id', 'DESC')
       ->paginate($this->pagLimit);
     }else {

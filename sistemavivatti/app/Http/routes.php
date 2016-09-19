@@ -19,14 +19,15 @@ Route::group(['middleware'=>'auth'], function () {
 
   // ROTAS Solicitacoes
   Route::get('/solicitacoes','SolicitacaoCtrl@index');//list
-  Route::get('/solicitacoes/novo','SolicitacaoCtrl@create');//form
-  Route::post('/solicitacoes/novo','SolicitacaoCtrl@store');//grava
-  Route::get('/solicitacoes/{id}/editar','SolicitacaoCtrl@edit');//form
-  Route::put('/solicitacoes/{id}/editar','SolicitacaoCtrl@update');//grava
-  Route::get('/solicitacoes/{id}/finalizar','SolicitacaoCtrl@destroy');//func
+  Route::get('/solicitacao/novo','SolicitacaoCtrl@create');//form
+  Route::post('/solicitacao/novo','SolicitacaoCtrl@store');//grava
+  Route::get('/solicitacao/{id}/editar','SolicitacaoCtrl@edit');//form
+  Route::put('/solicitacao/{id}/editar','SolicitacaoCtrl@update');//grava
+  Route::get('/solicitacao/{id}/excluir','SolicitacaoCtrl@destroy');//func
+  Route::get('/solicitacao/{id}/finalizar','SolicitacaoCtrl@finalizar');//func
 
   // ROTAS Recado
-  Route::get('/recados','RecadoCtrl@index');//list 
+  Route::get('/recados','RecadoCtrl@index');//list
   Route::post('/recado/novo','RecadoCtrl@store');//grava
   Route::get('/recado/{id}/excluir','RecadoCtrl@destroy');//func
 
