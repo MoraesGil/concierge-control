@@ -6,7 +6,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Gerenciamento de Moradores </h3>
+          <h3>Lista de Moradores </h3>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -17,8 +17,7 @@
             <div class="x_title">
               <h2>Relação</h2>
               <ul class="nav navbar-right panel_toolbox">
-                <li class="list"><a href="{{url('morador/novo')}}">NOVO <i class="fa fa-plus"></i></a>
-                </li>
+                <li class="list"><a href="{{url('morador/novo')}}">NOVO <i class="fa fa-plus"></i></a></li>
               </ul>
               <div class="clearfix">
               </div>
@@ -37,6 +36,24 @@
               </div>
 
               <div class="row">
+                @if(Session::has('success_message'))
+                  <div class="alert alert-success">
+                    {{Session::get('success_message')}}
+                  </div>
+                @endif
+
+                @if ($errors->any())
+                  <div class="alert alert-warning">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    @foreach($errors->all() as $error)
+                      <ul>
+                        <li>
+                          <h4> {{ $error }}</h4>
+                        </li>
+                      </ul>
+                    @endforeach
+                  </div>
+                @endif
                 <table class="table table-striped">
                   <thead>
                     <tr>
@@ -44,7 +61,7 @@
                       <th>Nome</th>
                       <th>CPF</th>
                       <th>Telefone</th>
-                      <th style="text-align:center;">Quantidade Dependentes</th>
+                      <th style="text-align:center;">Qtd. Dependentes</th>
                       <th style="text-align:center"> status </th>
                       <th style="text-align:center"> Opções </th>
                     </tr>
@@ -54,12 +71,19 @@
                       <tr>
                         <td scope="row">{{$morador->id}}</td>
                         <td>{{$morador->nome}}</td>
-                        <td>{{$morador->cpf}}</td>
-                        <td>{{$morador->contatos->telefone }}</td>
+                        <td><span class="cpf_mask">{{$morador->cpf}}</span></td>
+                        <td><span class="fone_mask">{{$morador->contatos->telefone }}</span></td>
                         <td style="text-align:center">
-                          <a href="{{url('morador/'.$morador->id.'/dependentes')}}" data-toggle="tooltip" data-placement="top" title="Ver dependentes">
-                            {{$morador->total_dependentes}}
-                          </a>
+
+                          @if($morador->total_dependentes>0)
+                            <a href="{{url('morador/'.$morador->id.'/dependentes')}}" data-toggle="tooltip" data-placement="top" title="Ver funcionarios">
+                              {{$morador->total_dependentes}} <i class="fa fa-mail-reply"></i>
+                            </a>
+                          @else
+                            <a href="{{url('morador/'.$morador->id.'/dependente/novo')}}" data-toggle="tooltip" data-placement="top" title="Adicionar Funcionario">
+                              N/A <i class="fa fa-plus-square-o"></i>
+                            </a>
+                          @endif
                         </td>
                         <td style="text-align:center">
                           @if(!$morador->usuario->desativado_em)

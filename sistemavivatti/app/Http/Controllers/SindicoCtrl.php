@@ -29,8 +29,7 @@ class SindicoCtrl extends Controller
       ->paginate($this->pagLimit);
     }else {
       $retorno = $this->PessoaModel->sindicos()->paginate($this->pagLimit);
-    }
-
+    } 
     return view('sindicos.list',['sindicos'=>$retorno]);
   }
 
@@ -65,8 +64,7 @@ class SindicoCtrl extends Controller
 
     \Session::flash('success_message','sindico cadastrado!');
 
-
-    return redirect('sindico/novo');
+    return redirect()->back();
   }
 
   public function edit($id){
@@ -118,7 +116,7 @@ class SindicoCtrl extends Controller
 
 
     \Session::flash('success_message','sindico atualizado!');
-    return redirect('sindico/'.$id.'/editar');
+    return redirect()->back();
   }
 
   public function destroy($id){
@@ -130,7 +128,7 @@ class SindicoCtrl extends Controller
 
     $sindico->usuario->forceDelete();
     \Session::flash('success_message','sindico excluido!');
-    return redirect('sindicos');
+    return redirect()->back();
   }
 
 
@@ -146,7 +144,7 @@ class SindicoCtrl extends Controller
     }else {
       $sindico->usuario->delete();
     }
-    return redirect('sindicos');
+    return redirect()->back();
   }
 
 

@@ -14,13 +14,13 @@ class MoradorSeeder extends Seeder
   {
     $faker = Faker::create();
 
-    foreach (range(1,50) as $i) {
+    foreach (range(1,10) as $i) {
       //variaveis
       $nome = $faker->name;
-      $rg =  $faker->randomNumber($nbDigits = 9);
-      $cpf =  $faker->randomNumber($nbDigits = 9).''.$faker->randomNumber($nbDigits = 2);
-      $telefone =  $faker->randomNumber($nbDigits = 9);
-      $celular =  $faker->randomNumber($nbDigits = 9);
+      $rg =  $faker->numerify($string = '#########');
+      $cpf =  $faker->numerify($string = '############');
+      $telefone =  $faker->numerify($string = '##########');
+      $celular =  $faker->numerify($string = '###########');
       $email = $faker->email;
 
       $logradouro = $faker->streetName;
@@ -58,9 +58,22 @@ class MoradorSeeder extends Seeder
       'cep'=>$cep ,
       'condominio_id'=> $condominio_id]);
 
-      foreach (range(1,5) as $index) {
-        $novo_usuario->dados_pessoais->dependentes()->create(['nome'=>$faker->name, 'rg'=>$faker->randomNumber($nbDigits = 9),'data_nascimento'=>$faker->dateTimeThisCentury->format('d/m/Y')]);
+      if ($faker->boolean(80)) {
+        foreach (range(1,5) as $index) {
+          $novo_usuario->dados_pessoais->dependentes()->create(['nome'=>$faker->name, 'rg'=>$faker->numerify($string = '#########'),'data_nascimento'=>$faker->dateTimeThisCentury->format('d/m/Y')]);
+        }
       }
+
+      if ($faker->boolean(80)) {
+        foreach (range(1,2) as $i) {
+          $a = $faker->randomLetter;
+          $b = $faker->randomLetter;
+          $c = $faker->randomLetter;
+          $novo_usuario->dados_pessoais->veiculos()->create(['placa'=>$a.$b.$c.'-'.$faker->randomNumber($nbDigits = 4)]);
+        }
+      }
+
+
     }
   }
 }

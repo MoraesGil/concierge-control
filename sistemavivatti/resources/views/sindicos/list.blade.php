@@ -6,7 +6,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Gerenciamento de Sindícos </h3>
+          <h3>Lista de Síndicos </h3>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -42,11 +42,7 @@
                     <tr>
                       <th>Cod</th>
                       <th>Nome</th>
-                      <th>CPF</th>
-                      <th>Telefone</th>
-                      <th style="text-align:center;">Condominio</th>
-                      <th style="text-align:center"> status </th>
-                      <th style="text-align:center"> Opções </th>
+                      <th style="text-align:center;">Qtd. Prestadores</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -55,7 +51,9 @@
                         <td scope="row">{{$sindico->id}}</td>
                         <td>{{$sindico->nome}}</td>
                         <td>{{$sindico->cpf}}</td>
-                        <td>{{$sindico->contatos->telefone }}</td>
+                        <td>
+                          <span class="fone_mask">{{$sindico->contatos->telefone }}</span>
+                        </td>
                         <td>{{$sindico->endereco->condominio->nome }}</td>
                         <td style="text-align:center">
                           @if(!$sindico->usuario->desativado_em)

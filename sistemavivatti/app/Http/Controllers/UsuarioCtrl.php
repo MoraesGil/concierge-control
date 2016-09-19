@@ -8,9 +8,24 @@ use Validator;
 use App\Http\Requests;
 
 use App\Usuario;
+use App\Recado;
+use App\Pessoa;
+use App\Servico;
 
 class UsuarioCtrl extends Controller
 {
+  public function home(Recado $recado, Pessoa $pes, Servico $ser){
+
+    $data = array(
+      'recados'=>$recado->orderBy('id', 'DESC')->limit(5)->get(),
+      'total_pessoas' => count($pes->all()),
+      'total_moradores' => count($pes->moradores()->get()),
+      'total_prestadores' => count($pes->prestadores()->get()),
+      'total_servicos' => count($ser->all())
+    );
+
+    return view('home',$data);
+  }
   public function index(){
     return redirect('/moradores');
   }

@@ -8,7 +8,6 @@
         <div class="title_left">
           <h3>Gerenciamento de Condôminos</h3>
         </div>
-
       </div>
       <div class="clearfix"></div>
 
@@ -70,7 +69,7 @@
             <div class="form-group">
               {!! Form::label('rg', 'RG:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('rg', null, ['class'=>'form-control col-md-7 ']) !!}
+                {!! Form::text('rg', null, ['class'=>'form-control col-md-7']) !!}
               </div>
             </div>
 
@@ -78,7 +77,7 @@
             <div class="form-group">
               {!! Form::label('cpf', 'CPF:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('cpf', null, ['class'=>'form-control col-md-7 ']) !!}
+                {!! Form::text('cpf', null, ['class'=>'form-control col-md-7 cpf_mask']) !!}
               </div>
             </div>
 
@@ -88,7 +87,7 @@
             <div class="form-group">
               {!! Form::label('telefone', 'Telefone:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('telefone', null, ['class'=>'form-control col-md-7 ']) !!}
+                {!! Form::text('telefone', null, ['class'=>'form-control col-md-7 fone_mask']) !!}
               </div>
             </div>
 
@@ -96,7 +95,7 @@
             <div class="form-group">
               {!! Form::label('celular', 'Celular:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('celular', null, ['class'=>'form-control col-md-7 ']) !!}
+                {!! Form::text('celular', null, ['class'=>'form-control col-md-7 cel_mask']) !!}
               </div>
             </div>
 
@@ -113,7 +112,7 @@
             <div class="form-group">
               {!! Form::label('cep', 'CEP:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-4 col-sm-4 col-xs-8">
-                {!! Form::text('cep', null, ['class'=>'form-control col-md-7 ','v-model'=>"cep"]) !!}
+                {!! Form::text('cep', null, ['class'=>'form-control col-md-7 cep_mask','v-model'=>"cep"]) !!}
               </div>
               <div class="col-md-2 col-sm-2 col-xs-4">
                 <button type="button" @click.prevent="consultaCep"  class="btn" name="button">Consultar</button>
@@ -162,9 +161,7 @@
 
             <div class="ln_solid"></div>
             <div class="form-group">
-              <div class="col-md-6 col-md-offset-3">
-                <a class="btn btn-primary" href="{{url('/moradores')}}">Cancelar</a>
-
+              <div class="col-md-6 col-md-offset-3"> 
                 <button id="send" type="submit" name="send" class="btn btn-success">Gravar</button>
               </div>
             </div>

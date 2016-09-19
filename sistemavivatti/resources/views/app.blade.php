@@ -18,7 +18,7 @@
   <link href="{{url('/build/css/custom.min.css')}}" rel="stylesheet">
 
   <link href="{{url('/assets/css/sweetalert.css')}}" rel="stylesheet">
-  <link href="{{url('/assets/css/pickout.min.css')}}" rel="stylesheet">
+  <link href="{{url('/assets/css/bootstrap-select.min.css')}}" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -72,6 +72,8 @@
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                     <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
                     <li><a href="{{url('/eventos')}}">Calendário Eventos</a></li>
+                    <li><a href="{{url('/servicos')}}">Serviços</a></li>
+                    <li><a href="{{url('/prestadores')}}">Prestadores de Serviços</a></li>
                   </ul>
                 </li>
                 <li><a><i class="fa fa-map-marker"></i> Portaria <span class="fa fa-chevron-down"></span></a>
@@ -79,6 +81,8 @@
                     <li><a href="{{url('/eventos')}}">Calendário Eventos</a></li>
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                     <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
+                    <li><a href="{{url('/servicos')}}">Serviços</a></li>
+                    <li><a href="{{url('/prestadores')}}">Prestadores de Serviços</a></li>
                   </ul>
                 </li>
                 <li>
@@ -159,11 +163,31 @@
   <!-- Custom Theme Scripts -->
   <script src="{{url('/build/js/custom.min.js')}}"></script>
   <script src="{{url('/assets/js/sweetalert.min.js')}}"></script>
-  <script src="{{url('/assets/js/spickout.min.js')}}"></script>
+  <script src="{{url('/assets/js/bootstrap-select.min.js')}}"></script>
+  <script src="{{url('/assets/js/jquery.mask.min.js')}}"></script>
+
   <!-- VUE JS Sripts -->
   <script src="{{url('/assets/js/vue.min.js')}}"></script>
   <script src="{{url('/assets/js/vue-resource.min.js')}}"></script>
   <script src="{{url('/assets/js/vue-strap.min.js')}}"></script>
+
+
+  <script type="text/javascript">
+  $('.data_mask').mask('00/00/0000');
+  $('.cpf_mask').mask('000.000.000-00', {reverse: true});
+  $('.cnpj_mask').mask('00.000.000/0000-00', {reverse: true});
+  $('.cep_mask').mask('00000-000');
+  $('.placa_mask').mask('AAA-0000');
+  $('.fone_mask').mask('(00)0000-0000');
+  var maskBehavior = function (val) {
+    return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+  },
+  options = {onKeyPress: function(val, e, field, options) {
+    field.mask(maskBehavior.apply({}, arguments), options);
+  }};
+
+  $('.cel_mask').mask(maskBehavior, options);
+  </script>
 
   @stack('script_level')
 

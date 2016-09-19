@@ -19,8 +19,8 @@ class PorteirosSeeder extends Seeder
       $nome = $faker->name;
       $rg =  $faker->randomNumber($nbDigits = 9);
       $cpf =  $faker->randomNumber($nbDigits = 9).''.$faker->randomNumber($nbDigits = 2);
-      $telefone =  $faker->randomNumber($nbDigits = 9);
-      $celular =  $faker->randomNumber($nbDigits = 9);
+      $telefone =  $faker->numerify($string = '##########');
+      $celular =  $faker->numerify($string = '###########');
 
       $logradouro = $faker->streetName;
       $numero = $faker->numberBetween(1,200);

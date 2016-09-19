@@ -8,7 +8,7 @@ class SolicitacoesSeeder extends Seeder
 {
   // REF BD
   // anonimo = 0,1,
-  // tipo 0-3, 0 == outros 1 == recado 2 == reclamação 3 == problemas
+  // tipo 0-3, 0 == recado 1 == outros 2 == reclamação 3 == problemas
   // prioridade, 0 == normal 1 == media 2 == alta
   // detalhes, text
 
@@ -25,10 +25,11 @@ class SolicitacoesSeeder extends Seeder
       $usuario->solicitacoes()->create(
       [
         'anonimo'=>$faker->boolean(30) , //$chanceOfGettingTrue = 30%
-        'tipo'=>$faker->numberBetween(0,3),
+        'tipo'=>$faker->numberBetween(1,3),
         'prioridade'=>$faker->numberBetween(0,2),
-        'detalhes'=>$faker->text,
+        'titulo'=>$faker->text($maxNbChars = 45) ,
+        'descricao'=>$faker->text,
       ]);
-    }   
+    }
   }
 }

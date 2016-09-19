@@ -22,6 +22,11 @@ class Usuario extends Authenticatable
     return $this->hasMany('App\Solicitacao');
   }
 
+  public function recados()
+  {
+    return $this->hasMany('App\Recado');
+  }
+
   public function reservas()
   {
     return $this->hasMany('App\Reserva');

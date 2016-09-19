@@ -6,7 +6,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Gerenciamento de Porteiros </h3>
+          <h3>Lista de Porteiros </h3>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -37,12 +37,30 @@
               </div>
 
               <div class="row">
+                @if(Session::has('success_message'))
+                  <div class="alert alert-success">
+                    {{Session::get('success_message')}}
+                  </div>
+                @endif
+
+                @if ($errors->any())
+                  <div class="alert alert-warning">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    @foreach($errors->all() as $error)
+                      <ul>
+                        <li>
+                          <h4> {{ $error }}</h4>
+                        </li>
+                      </ul>
+                    @endforeach
+                  </div>
+                @endif
                 <table class="table table-striped">
                   <thead>
                     <tr>
                       <th>Cod</th>
                       <th>Nome</th>
-                      <th>CPF</th>
+                      <th></th>
                       <th>Telefone</th>
                       <th style="text-align:center;">Condominio</th>
                       <th style="text-align:center"> status </th>
@@ -54,8 +72,8 @@
                       <tr>
                         <td scope="row">{{$porteiro->id}}</td>
                         <td>{{$porteiro->nome}}</td>
-                        <td>{{$porteiro->cpf}}</td>
-                        <td>{{$porteiro->contatos->telefone }}</td>
+                        <td><span class="cpf_mask">{{$porteiro->cpf}}</span></td>
+                        <td><span class="fone_mask">{{$porteiro->contatos->telefone }}</span></td>
                         <td>{{$porteiro->endereco->condominio->nome }}</td>
                         <td style="text-align:center">
                           @if(!$porteiro->usuario->desativado_em)

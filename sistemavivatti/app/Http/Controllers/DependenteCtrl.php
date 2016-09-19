@@ -17,7 +17,7 @@ class DependenteCtrl extends Controller
   }
 
   public function index($morador_id, Request $request){
-
+ 
     $morador = $this->PessoaModel->moradores()->find($morador_id);
 
     if (!$morador) {
@@ -44,6 +44,7 @@ class DependenteCtrl extends Controller
       return redirect('moradores');
     }
 
+
     return view('dependentes.form',['morador'=>$morador]);
   }
 
@@ -59,7 +60,7 @@ class DependenteCtrl extends Controller
 
     \Session::flash('success_message','Dependente cadastrado!');
 
-    return redirect('morador/'.$morador_id.'/dependente/novo');
+    return redirect()->back();
   }
 
   public function edit($morador_id,$dependente_id){
@@ -104,7 +105,8 @@ class DependenteCtrl extends Controller
 
 
     \Session::flash('success_message','Dependente atualizado!');
-    return redirect('morador/'.$morador->id.'/dependente/'.$dependente->id.'/editar');
+
+    return redirect()->back();
   }
 
   public function destroy($morador_id,$dependente_id){
@@ -124,7 +126,7 @@ class DependenteCtrl extends Controller
     $dependente->delete();
 
     \Session::flash('success_message','Dependente excluido!');
-    return redirect('morador/'.$morador_id.'/dependentes');
+    return redirect()->back();
   }
 
 

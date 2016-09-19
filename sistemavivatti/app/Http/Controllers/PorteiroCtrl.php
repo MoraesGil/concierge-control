@@ -66,7 +66,7 @@ class PorteiroCtrl extends Controller
     \Session::flash('success_message','Porteiro cadastrado!');
 
 
-    return redirect('Porteiro/novo');
+    return redirect()->back();
   }
 
   public function edit($id){
@@ -118,7 +118,7 @@ class PorteiroCtrl extends Controller
 
 
     \Session::flash('success_message','Porteiro atualizado!');
-    return redirect('Porteiro/'.$id.'/editar');
+    return redirect()->back();
   }
 
   public function destroy($id){
@@ -130,11 +130,8 @@ class PorteiroCtrl extends Controller
 
     $porteiro->usuario->forceDelete();
     \Session::flash('success_message','Porteiro excluido!');
-    return redirect('porteiros');
+    return redirect()->back();
   }
-
-
-
   public function changeStatus($id){
     // usuario com pessoa de id = $id
     $porteiro =    $this->PessoaModel->find($id);
@@ -146,7 +143,7 @@ class PorteiroCtrl extends Controller
     }else {
       $porteiro->usuario->delete();
     }
-    return redirect('porteiros');
+    return redirect()->back();
   }
 
 

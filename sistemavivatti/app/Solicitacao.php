@@ -3,13 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Solicitacao extends Model
 {
+  use SoftDeletes;
   protected $table ='solicitacoes';
 
-
-  protected $fillable = ['usuario_id', 'anonimo', 'tipo', 'prioridade', 'detalhes', 'finalizado_em'];
+  protected $fillable = ['usuario_id', 'anonimo', 'tipo', 'prioridade','descricao','titulo', 'finalizado_em'];
 
   protected $hidden =[''];
 
@@ -21,6 +22,12 @@ class Solicitacao extends Model
     return $this->belongsTo('App\Usuario');
   }
 
-  const CREATED_AT = 'criado_em'; 
+  public function getCriadoEmAttribute($value)
+  {
+    return \Carbon\Carbon::parse($value)->format('d/m/Y H:i');
+  }
+
+  const CREATED_AT = 'criado_em';
+  const DELETED_AT = 'finalizado_em';
 
 }

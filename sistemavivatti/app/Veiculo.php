@@ -11,4 +11,9 @@ class Veiculo extends Model
 
   public $timestamps = false;
 
+  public function responsavel()
+  {
+    return $this->belongsTo('App\Pessoa','pessoa_id');
+  }
+
 }

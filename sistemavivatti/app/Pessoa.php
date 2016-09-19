@@ -11,7 +11,7 @@ class Pessoa extends Model
   protected $fillable =
   ['usuario_id', 'nome', 'rg', 'cpf', 'cnpj', 'foto_url', 'data_nascimento', 'responsavel_id'];
 
-  protected $appends = ['total_dependentes'];
+
   protected $hidden = ['dependentes'];
 
   protected $dates = ['data_nascimento'];
@@ -19,7 +19,8 @@ class Pessoa extends Model
 
   public $timestamps = false;
 
-  //mutators
+
+  ////mutators
   public function getTotalDependentesAttribute()
   {
     return count($this->dependentes);
@@ -34,41 +35,80 @@ class Pessoa extends Model
   {
     return \Carbon\Carbon::parse($value)->format('d/m/Y');
   }
-  //mutators end
+  ////mutators end
 
-
-  public function sindicos()
+  //filtro por usuario
+  public function sindicos($condominio = null)
   {
     return $this->whereIn('usuario_id',
     \DB::table('usuarios')
     ->where('permissao','s')->distinct()->pluck('id'));
   }
 
-  public function porteiros()
+  public function porteiros($condominio = null)
   {
+    if ($condominio) {
+      # code...
+    }
     return $this->whereIn('usuario_id',
     \DB::table('usuarios')
     ->where('permissao','p')->distinct()->pluck('id'));
   }
 
-  public function moradores()
+  public function moradores($condominio = null)
   {
+    if ($condominio) {
+      # code...
+    }
     return $this->whereIn('usuario_id',
     \DB::table('usuarios')
     ->where('permissao','m')->distinct()->pluck('id'));
   }
+  //filtro por usuario
 
 
+  //prestadores de servicos
+
+  public function prestadores()
+  {
+    return $this->whereIn('id',
+    \DB::table('servicos_prestador')->distinct()->pluck('pessoa_id'));
+  }
+  public function servicos_prestados(){
+    return $this->belongsToMany('App\Servico','servicos_prestador',
+    'pessoa_id', 'servico_id');
+  }
+
+  public function avaliacoes(){
+    return $this->belongsToMany('App\Usuario','avaliacao_prestador',
+    'pessoa_id', 'usuario_id')->withPivot('nota');
+  }
+
+  public function getNotaUsuario($usuario_id){
+    $usuario = $this->avaliacoes()->where('usuario_id', $usuario_id)->first();
+    return $usuario ? $usuario->pivot->nota : 0;
+  }
+
+  public function getMediaAvaliacoesAttribute()
+  {
+    $media = \DB::table('avaliacao_prestador')
+    ->where('pessoa_id', $this->id)
+    ->avg('nota');
+    return round($media*2)/2;
+  }
+
+  //prestadores de servicos
+  public function veiculos()
+  {
+    return $this->hasMany('App\Veiculo','responsavel_id');
+  }
+
+  //filhos ou funcionarios
   public function dependentes()
   {
     return $this->hasMany('App\Pessoa','responsavel_id');
   }
 
-  public function funcionarios()
-  {
-    return $this->hasMany('App\Pessoa','responsavel_id');
-  }
-  
   public function responsavel()
   {
     return $this->belongsTo('App\Pessoa','responsavel_id');
@@ -88,4 +128,6 @@ class Pessoa extends Model
   {
     return $this->belongsTo('App\Usuario')->withTrashed();
   }
+
+
 }

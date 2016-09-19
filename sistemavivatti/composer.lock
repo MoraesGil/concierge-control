@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0d4ac17bb1c19a58c75095169d78725a",
-    "content-hash": "f4832849e9536619a1abc39612d0ca61",
+    "hash": "28311848a552419f4665cb109aa1d680",
+    "content-hash": "259b166ad196d98979e6628a67e7685b",
     "packages": [
         {
             "name": "cagartner/correios-consulta",
@@ -151,6 +151,56 @@
                 "preload"
             ],
             "time": "2015-11-09 22:51:51"
+        },
+        {
+            "name": "climatempo/weatherapi",
+            "version": "v1.11.4",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/climatempodteam/climatempo-weatherapi.git",
+                "reference": "ff7e8eb53652cf441e36bafcddceb20f03d0a5e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/climatempodteam/climatempo-weatherapi/get/ff7e8eb53652cf441e36bafcddceb20f03d0a5e2.zip",
+                "reference": "ff7e8eb53652cf441e36bafcddceb20f03d0a5e2",
+                "shasum": ""
+            },
+            "require": {
+                "php": " >= 5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Santos",
+                    "email": "guilhermedossantos91@gmail.com"
+                },
+                {
+                    "name": "Michael Felix Dias",
+                    "email": "michaelfelixdias@gmail.com"
+                },
+                {
+                    "name": "Michel Araujo",
+                    "email": "michelaraujopinto@gmail.com"
+                }
+            ],
+            "description": "Biblioteca para obter dados do tempo da climatempo.",
+            "homepage": "http://api.climatempo.com.br",
+            "keywords": [
+                "climatempo",
+                "library",
+                "weather"
+            ],
+            "time": "2016-09-06 23:08:01"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -875,16 +925,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "47b254ea51f1d6d5dc04b9b299e88346bf2369e3"
+                "reference": "4dd659edadffdc2143e4753df655d866dbfeedf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/47b254ea51f1d6d5dc04b9b299e88346bf2369e3",
-                "reference": "47b254ea51f1d6d5dc04b9b299e88346bf2369e3",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/4dd659edadffdc2143e4753df655d866dbfeedf0",
+                "reference": "4dd659edadffdc2143e4753df655d866dbfeedf0",
                 "shasum": ""
             },
             "require": {
@@ -922,7 +972,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2016-04-19 13:41:41"
+            "time": "2016-09-16 12:04:44"
         },
         {
             "name": "paragonie/random_compat",

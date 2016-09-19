@@ -17,7 +17,6 @@ class CondominoCtrl extends Controller
     $this->CondominioModel = $c;
     $this->UsuarioModel = $u;
     $this->pagLimit = 7;
-
   }
 
   public function index(Request $request){
@@ -35,14 +34,12 @@ class CondominoCtrl extends Controller
     return view('condominos.list',['moradores'=>$retorno]);
   }
 
-
   public function create(){
-    return view('condominos.form',['condominios'=>$this->CondominioModel->lists('nome','id')]);
+    $backUrl = redirect()->back()->getTargetUrl();
+    return view('condominos.form',['condominios'=>$this->CondominioModel->lists('nome','id'),'backUrl'=>$backUrl]);
   }
 
   public function store(CondominoRequest $request){
-
-    // dd($request->all());
 
     $cpf3 = substr($request->get('cpf'), 0, 3);//3 primeiros digitos cpf
 
@@ -65,11 +62,9 @@ class CondominoCtrl extends Controller
     //grava endereco pessoais
     $novo_usuario->dados_pessoais->endereco()->create($request->only('logradouro', 'numero','bairro','cidade','cep','condominio_id'));
 
-
     \Session::flash('success_message','Morador cadastrado!');
 
-
-    return redirect('morador/novo');
+    return redirect()->back();
   }
 
   public function edit($id){
@@ -103,7 +98,7 @@ class CondominoCtrl extends Controller
 
 
     \Session::flash('success_message','Morador atualizado!');
-    return redirect('morador/'.$id.'/editar');
+    return redirect()->back();
   }
 
   public function destroy($id){
@@ -115,7 +110,7 @@ class CondominoCtrl extends Controller
 
     $morador->usuario->forceDelete();
     \Session::flash('success_message','Morador excluido!');
-    return redirect('moradores');
+    return redirect()->back();
   }
 
   private function transform_pessoa($pessoa){
@@ -147,7 +142,7 @@ class CondominoCtrl extends Controller
     }else {
       $morador->usuario->delete();
     }
-    return redirect('moradores');
+    return redirect()->back();
   }
 
 

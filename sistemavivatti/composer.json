@@ -9,7 +9,8 @@
     "laravel/framework": "5.2.*",
     "laravelcollective/html": "^5.2",
     "cagartner/correios-consulta": "0.1.*",
-    "jailtonsc/validador-cpf-laravel": "^2.0"
+    "jailtonsc/validador-cpf-laravel": "^2.0",
+    "climatempo/weatherapi": "^1.11"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

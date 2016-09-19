@@ -12,7 +12,23 @@ Route::get('/cep/{id}',function($cep){
   return \Correios::cep($cep);
 });
 
+
 Route::group(['middleware'=>'auth'], function () {
+  // ROTAS HOME
+  Route::get('/home','UsuarioCtrl@home');
+
+  // ROTAS Solicitacoes
+  Route::get('/solicitacoes','SolicitacaoCtrl@index');//list
+  Route::get('/solicitacoes/novo','SolicitacaoCtrl@create');//form
+  Route::post('/solicitacoes/novo','SolicitacaoCtrl@store');//grava
+  Route::get('/solicitacoes/{id}/editar','SolicitacaoCtrl@edit');//form
+  Route::put('/solicitacoes/{id}/editar','SolicitacaoCtrl@update');//grava
+  Route::get('/solicitacoes/{id}/finalizar','SolicitacaoCtrl@destroy');//func
+
+  // ROTAS Recado
+  Route::get('/recados','RecadoCtrl@index');//list 
+  Route::post('/recado/novo','RecadoCtrl@store');//grava
+  Route::get('/recado/{id}/excluir','RecadoCtrl@destroy');//func
 
   // ROTAS MORADOR
   Route::get('/moradores','CondominoCtrl@index');//list
@@ -22,6 +38,16 @@ Route::group(['middleware'=>'auth'], function () {
   Route::put('/morador/{id}/editar','CondominoCtrl@update');//grava
   Route::get('/morador/{id}/excluir','CondominoCtrl@destroy');//func
   Route::get('/morador/{id}/alterarStatus','CondominoCtrl@changeStatus');//func
+
+  // ROTAS DEPENDENTES
+  Route::get('/morador/{morador_id}/dependentes','DependenteCtrl@index');//list
+  Route::get('/morador/{morador_id}/dependente/novo','DependenteCtrl@create');//form
+  Route::post('/morador/{morador_id}/dependente/novo','DependenteCtrl@store');//func
+  Route::get('/morador/{morador_id}/dependente/{dependente_id}/editar','DependenteCtrl@edit');//form
+  Route::put('/morador/{morador_id}/dependente/{dependente_id}/editar','DependenteCtrl@update');//func
+  Route::get('/morador/{morador_id}/dependente/{dependente_id}/excluir','DependenteCtrl@destroy');//func
+
+
   // ROTAS PORTEIRO
   Route::get('/porteiros','PorteiroCtrl@index');//list
   Route::get('/porteiro/novo','PorteiroCtrl@create');//form
@@ -40,13 +66,27 @@ Route::group(['middleware'=>'auth'], function () {
   Route::get('/sindico/{id}/excluir','SindicoCtrl@destroy');//func
   Route::get('/sindico/{id}/alterarStatus','SindicoCtrl@changeStatus');//func
 
-  // ROTAS DEPENDENTES
-  Route::get('/morador/{morador_id}/dependentes','DependenteCtrl@index');//list
-  Route::get('/morador/{morador_id}/dependente/novo','DependenteCtrl@create');//form
-  Route::post('/morador/{morador_id}/dependente/novo','DependenteCtrl@store');//func
-  Route::get('/morador/{morador_id}/dependente/{dependente_id}/editar','DependenteCtrl@edit');//form
-  Route::put('/morador/{morador_id}/dependente/{dependente_id}/editar','DependenteCtrl@update');//func
-  Route::get('/morador/{morador_id}/dependente/{dependente_id}/excluir','DependenteCtrl@destroy');//func
+  // ROTAS PRESTADOR
+  Route::get('/prestadores','PrestadorCtrl@index');//list
+  Route::get('/prestador/novo','PrestadorCtrl@create');//form
+  Route::post('/prestador/novo','PrestadorCtrl@store');//grava
+  Route::get('/prestador/{id}','PrestadorCtrl@show');//form
+  Route::get('/prestador/{id}/editar','PrestadorCtrl@edit');//form
+  Route::put('/prestador/{id}/editar','PrestadorCtrl@update');//grava
+  Route::get('/prestador/{id}/excluir','PrestadorCtrl@destroy');//func
+
+  Route::get('/prestador/{id}/nota','PrestadorCtrl@getNota');//func
+  Route::put('/prestador/{id}/nota','PrestadorCtrl@putNota');//grava
+
+
+  // ROTAS FUNCIONARIOS PRESTADOR
+  Route::get('/prestador/{prestador_id}/funcionarios','FuncionarioCtrl@index');//list
+  Route::get('/prestador/{prestador_id}/funcionario/novo','FuncionarioCtrl@create');//form
+  Route::post('/prestador/{prestador_id}/funcionario/novo','FuncionarioCtrl@store');//func
+  Route::get('/prestador/{prestador_id}/funcionario/{funcionario_id}/editar','FuncionarioCtrl@edit');//form
+  Route::put('/prestador/{prestador_id}/funcionario/{funcionario_id}/editar','FuncionarioCtrl@update');//func
+  Route::get('/prestador/{prestador_id}/funcionario/{funcionario_id}/excluir','FuncionarioCtrl@destroy');//func
+
 
   // ROTAS SERVIÇOS
   Route::get('/servicos','ServicoCtrl@index');//list
@@ -57,13 +97,14 @@ Route::group(['middleware'=>'auth'], function () {
   Route::get('/servico/{id}/excluir','ServicoCtrl@destroy');//func
 
   // ROTAS VEICULOS
-  Route::get('/veiculos','ServicoCtrl@index');//list
-  Route::get('/veiculo/novo','ServicoCtrl@create');//form
-  Route::post('/veiculo/novo','ServicoCtrl@store');//grava
-  Route::get('/veiculo/{id}/editar','ServicoCtrl@edit');//form
-  Route::put('/veiculo/{id}/editar','ServicoCtrl@update');//grava
-  Route::get('/veiculo/{id}/excluir','ServicoCtrl@destroy');//func
+  Route::get('/veiculos','VeiculoCtrl@index');//list
+  Route::get('/veiculo/novo','VeiculoCtrl@create');//form
+  Route::post('/veiculo/novo','VeiculoCtrl@store');//grava
+  Route::get('/veiculo/{id}/editar','VeiculoCtrl@edit');//form
+  Route::put('/veiculo/{id}/editar','VeiculoCtrl@update');//grava
+  Route::get('/veiculo/{id}/excluir','VeiculoCtrl@destroy');//func
 
+  // ROTAS LIVRO PORTARIA
 
 
 });
