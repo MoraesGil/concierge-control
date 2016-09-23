@@ -57,6 +57,16 @@
             @endif
 
             {{-- DADOS PESSOAIS --}}
+            @if(!Request::is('*/editar'))
+              <!-- Tipo Radio Input -->
+              <div class="form-group">
+                <div class="col-md-offset-4  col-sm-offset-4 col-md-6 col-sm-6 col-xs-12">
+                  {{ Form::radio('tipo','pf',true,['v-model'=>"pesTipo"]) }}   Pessoa Fisíca
+
+                  {{ Form::radio('tipo', 'pj',false,['v-model'=>"pesTipo"]) }}    Pessoa Juridica
+                </div>
+              </div>
+            @endif
 
             <!-- Nome Form Input -->
             <div class="form-group">
@@ -67,7 +77,7 @@
             </div>
 
             <!-- RG Form Input -->
-            <div class="form-group">
+            <div class="form-group" v-show='pesTipo == "pf"'>
               {!! Form::label('rg', 'RG:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! Form::text('rg', null, ['class'=>'form-control col-md-7 ']) !!}
@@ -75,10 +85,18 @@
             </div>
 
             <!-- CPF Form Input -->
-            <div class="form-group">
+            <div class="form-group" v-show='pesTipo == "pf"'>
               {!! Form::label('cpf', 'CPF:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('cpf', null, ['class'=>'form-control col-md-7 cpf_mask']) !!}
+                {!! Form::text('cpf', null, ['class'=>'form-control col-md-7 cpf_mask','v-model'=>"cpf"]) !!}
+              </div>
+            </div>
+
+            <!-- CNPJ Form Input -->
+            <div class="form-group"  v-show='pesTipo == "pj"'>
+              {!! Form::label('cnpj', 'CNPJ:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                {!! Form::text('cnpj', null, ['class'=>'form-control col-md-7 cnpj_mask','v-model'=>"cnpj"]) !!}
               </div>
             </div>
 
@@ -88,7 +106,7 @@
             <div class="form-group">
               {!! Form::label('telefone', 'Telefone:',['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
               <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('telefone', null, ['class'=>'form-control col-md-7 fone_mask']) !!}
+                {!! Form::text('telefone', null, ['class'=>'form-control col-md-7 fone_mask','v-model'=>"fone"]) !!}
               </div>
             </div>
 
@@ -195,10 +213,29 @@
       logradouro:'',
       bairro:'',
       cidade:'',
-    },
 
+      pesTipo:'',
+      cnpj:'',
+
+    },
+    ready:function(){
+      if(this.pesTipo == '')
+      {
+        if (this.cnpj =='') {
+          this.pesTipo ='pf';
+        }
+        else {
+          this.pesTipo ='pj';
+        }
+      }
+      console.log(this.pesTipo);
+
+    },
     methods: {
       consultaCep: function () {
+        console.log(this.cpf);
+        console.log(this.cnpj);
+
         var endereco_cep;
         this.$http.get('/cep/'+(this.cep)).then((r) => {
           if (r.data !=undefined) {

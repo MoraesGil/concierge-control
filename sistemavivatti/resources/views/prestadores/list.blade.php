@@ -62,13 +62,14 @@
                       <th>Nome</th>
                       <th>CPF/CNPJ</th>
                       <th>Telefone</th>
+                      <th>Serviços</th>
                       <th style="text-align:center;">Qtd. Funcionarios</th>
                       <th style="text-align:center;">Média</th>
                       <th style="text-align:center"> Opções </th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($prestadores as  $prestador)
+                    @forelse($prestadores as  $prestador)
                       <tr>
                         <td scope="row">{{$prestador->id}}</td>
                         <td>{{$prestador->nome}}</td>
@@ -80,6 +81,14 @@
                           @endif
                         </td>
                         <td><span class="fone_mask">{{$prestador->contatos->telefone }}</span></td>
+
+                        <td class="text-center">
+                          <span data-toggle="tooltip" data-placement="top" title="@foreach($prestador->servicos_prestados as $servico)
+                            {{$servico->nome}},
+                          @endforeach">{{$prestador->total_servicos}}</span>
+
+
+                        </td>
                         <td style="text-align:center">
                           @if($prestador->total_dependentes>0)
                             <a href="{{url('prestador/'.$prestador->id.'/funcionarios')}}" data-toggle="tooltip" data-placement="right" title="Ver funcionarios">
@@ -114,7 +123,11 @@
                           </a>
                         </td>
                       </tr>
-                    @endforeach
+                    @empty
+                      <h3 class="text-center"> Nenhum prestador encontrado com termo '{{$_GET["busca"]}}'</h3>
+                    @endforelse
+
+
                   </tbody>
                 </table>
                 <span class="pull-right"> {{ $prestadores->links() }} </span>

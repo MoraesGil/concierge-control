@@ -42,7 +42,11 @@
                     <tr>
                       <th>Cod</th>
                       <th>Nome</th>
-                      <th style="text-align:center;">Qtd. Prestadores</th>
+                      <th >CPF</th>
+                      <th >Telefone</th>
+                      <th >Condominio</th>
+                      <th style="text-align:center"> status </th>
+                      <th style="text-align:center"> Opções </th>
                     </tr>
                   </thead>
                   <tbody>

@@ -24,23 +24,24 @@ class CondominoCtrl extends Controller
 
     if ($filtro) {
       $retorno = $this->PessoaModel->moradores()
+      ->orderBy('nome', 'ASC')
       ->where("nome", "LIKE", "%$filtro%")
       ->orWhere("cpf", "LIKE", "%$filtro%")
       ->paginate($this->pagLimit);
     }else {
-      $retorno = $this->PessoaModel->moradores()->paginate($this->pagLimit);
+      $retorno = $this->PessoaModel->moradores()->orderBy('nome', 'ASC')->paginate($this->pagLimit);
     }
 
     return view('condominos.list',['moradores'=>$retorno]);
   }
 
   public function create(){
-    $backUrl = redirect()->back()->getTargetUrl();
-    return view('condominos.form',['condominios'=>$this->CondominioModel->lists('nome','id'),'backUrl'=>$backUrl]);
+    // $backUrl = redirect()->back()->getTargetUrl();
+    return view('condominos.form',['condominios'=>$this->CondominioModel->lists('nome','id')]);
   }
 
   public function store(CondominoRequest $request){
-
+     
     $cpf3 = substr($request->get('cpf'), 0, 3);//3 primeiros digitos cpf
 
     $login = substr(str_replace(' ', '', $request->get('nome')), 0, 5);//nome 5 primeiras letras

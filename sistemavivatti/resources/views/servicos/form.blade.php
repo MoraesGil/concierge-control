@@ -6,7 +6,7 @@
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>Gerenciamento de servicos</h3>
+          <h3>Gerenciamento de Serviços</h3>
         </div>
 
       </div>
@@ -26,7 +26,7 @@
           <div class="x_content">
 
             <p>Para listar os servicos cadastrados, clique no botão na barra acima</p>
-            <span class="section">Nome do serviço/atividade</span>
+            <span class="section">Nome do serviço/atividade fornecidas</span>
 
             @if(Session::has('success_message'))
               <div class="alert alert-success">
@@ -65,7 +65,7 @@
                 {!! Form::text('nome', null, ['class'=>'form-control col-md-7 ','autofocus']) !!}
               </div>
             </div>
-  
+
             <div class="ln_solid"></div>
             <div class="form-group">
               <div class="col-md-6 col-md-offset-3">

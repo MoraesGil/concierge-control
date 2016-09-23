@@ -46,20 +46,12 @@ class PrestadorSeeder extends Seeder
         'cidade'=>$cidade,
         'cep'=>$cep ]);
 
-        foreach (range(1,2) as $i) {
-          $a = $faker->randomLetter;
-          $b = $faker->randomLetter;
-          $c = $faker->randomLetter;
-          $prestador->veiculos()->create(['placa'=>$a.$b.$c.'-'.$faker->numerify($string = '####')]);
-        }
         if ($faker->boolean(80)) {
           $prestador->servicos_prestados()->sync([$faker->numberBetween(1,10)]);
         }else {
           $prestador->servicos_prestados()->sync([1,2,3]);
         }
-
       }
-
 
       //gera empresa CNPJ com dependentes
       else {
@@ -89,12 +81,7 @@ class PrestadorSeeder extends Seeder
         'cidade'=>$cidade,
         'cep'=>$cep ]);
 
-        foreach (range(1,2) as $i) {
-          $a = $faker->randomLetter;
-          $b = $faker->randomLetter;
-          $c = $faker->randomLetter;
-          $prestador->veiculos()->create(['placa'=>$a.$b.$c.'-'.$faker->numerify($string = '####')]);
-        }
+
         if ($faker->boolean(80)) {
           $prestador->servicos_prestados()->sync([$faker->numberBetween(1,10)]);
         }else {

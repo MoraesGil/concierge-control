@@ -11,9 +11,17 @@ class Veiculo extends Model
 
   public $timestamps = false;
 
-  public function responsavel()
+  protected $hidden = ['pivot'];
+
+  public function utilizadores()
   {
-    return $this->belongsTo('App\Pessoa','pessoa_id');
+    return $this->belongsToMany('App\Pessoa','usuarios_veiculo','veiculo_id','pessoa_id');
+  }
+
+  ////mutators
+  public function getPlacaAttribute()
+  {
+    return strtoupper($this->attributes['placa']);
   }
 
 }

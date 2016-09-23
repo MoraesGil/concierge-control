@@ -8,5 +8,9 @@
     "gulp": "^3.9.1",
     "laravel-elixir": "^5.0.0",
     "bootstrap-sass": "^3.0.0"
+  },
+  "dependencies": {
+    "vue": "^1.0.26",
+    "vue-typeahead": "^2.2.1"
   }
 }

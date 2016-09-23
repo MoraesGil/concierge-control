@@ -8,7 +8,7 @@ class SolicitacoesSeeder extends Seeder
 {
   // REF BD
   // anonimo = 0,1,
-  // tipo 0-3, 0 == recado 1 == outros 2 == reclamação 3 == problemas
+  // tipo 0-3,  1 == outros 2 == reclamação 3 == problemas
   // prioridade, 0 == normal 1 == media 2 == alta
   // detalhes, text
 

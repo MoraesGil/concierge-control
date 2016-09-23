@@ -31,6 +31,9 @@ class UsuarioCtrl extends Controller
   }
 
   public function login(){
+    if (Auth::check()) {
+      return redirect('/home');
+    }
     return view('login');
   }
 

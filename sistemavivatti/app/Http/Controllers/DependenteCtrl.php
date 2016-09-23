@@ -17,7 +17,7 @@ class DependenteCtrl extends Controller
   }
 
   public function index($morador_id, Request $request){
- 
+
     $morador = $this->PessoaModel->moradores()->find($morador_id);
 
     if (!$morador) {
@@ -49,6 +49,7 @@ class DependenteCtrl extends Controller
   }
 
   public function store($morador_id,DependenteRequest $request){
+    
     $morador = $this->PessoaModel->moradores()->find($morador_id);
 
     if (!$morador) {

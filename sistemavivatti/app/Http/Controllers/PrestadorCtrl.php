@@ -18,16 +18,20 @@ class PrestadorCtrl extends Controller
   }
 
   public function index(Request $request){
-    $filtro = $request->get('busca');
+    $filtro = $request->exists('busca') ? $request->get('busca') : '';
 
     if ($filtro) {
       $retorno = $this->PessoaModel->prestadores()
       ->where("nome", "LIKE", "%$filtro%")
       ->orWhere("cpf", "LIKE", "%$filtro%")
       ->orWhere("cnpj", "LIKE", "%$filtro%")
+      ->orWhereHas("servicos_prestados", function($s) use ($filtro){
+          $s->whereIn('servico_id', $this->ServicoModel->where("nome", "LIKE", "%$filtro%")->pluck('id'));
+      })
       ->paginate($this->pagLimit);
     }else {
-      $retorno = $this->PessoaModel->prestadores()->paginate($this->pagLimit);
+      $retorno = $this->PessoaModel->prestadores()
+      ->paginate($this->pagLimit);
     }
 
     return view('prestadores.list',['prestadores'=>$retorno]);
@@ -39,8 +43,15 @@ class PrestadorCtrl extends Controller
   }
 
   public function store(PrestadorRequest $request){
+
     //grava dados pessoais
-    $novo_prestador = $this->PessoaModel->create($request->only('nome', 'rg','cpf','cnpj'));
+    if ($request->get('tipo')=='pj') {
+      $novo_prestador = $this->PessoaModel->create($request->only('nome', 'cnpj'));
+
+    }else {
+      $novo_prestador = $this->PessoaModel->create($request->only('nome', 'rg','cpf'));
+    }
+
     //grava contatos pessoais
     $novo_prestador->contatos()->create($request->only('telefone', 'celular','email'));
     //grava endereco pessoais
@@ -76,9 +87,13 @@ class PrestadorCtrl extends Controller
     if (!$prestador) {
       return redirect('prestadores');
     }
-
     //atualiza dados pessoais
-    $prestador->update($request->only('nome', 'rg','cpf'));
+    if ($request->get('tipo')=='pj') {
+      $prestador->update($request->only('nome', 'cnpj'));
+    }else {
+      $prestador->update($request->only('nome', 'rg','cpf'));
+    }
+
     //atualiza contatos pessoais
     $prestador->contatos()->update($request->only('telefone', 'celular','email'));
     //atualiza endereco pessoais
@@ -131,7 +146,13 @@ class PrestadorCtrl extends Controller
     $pessoa_retorno->id = $pessoa->id;
     $pessoa_retorno->nome = $pessoa->nome;
     $pessoa_retorno->rg = $pessoa->rg;
-    $pessoa_retorno->cpf = $pessoa->cpf;
+
+    if ($pessoa->cnpj) {
+      $pessoa_retorno->cnpj = $pessoa->cnpj;
+    }else {
+      $pessoa_retorno->cpf = $pessoa->cpf;
+    }
+
     $pessoa_retorno->telefone = $pessoa->contatos->telefone;
     $pessoa_retorno->celular = $pessoa->contatos->celular;
     $pessoa_retorno->email = $pessoa->contatos->email;
@@ -141,7 +162,6 @@ class PrestadorCtrl extends Controller
     $pessoa_retorno->bairro = $pessoa->endereco->bairro;
     $pessoa_retorno->cidade = $pessoa->endereco->cidade;
     $pessoa_retorno->servicos_id = $pessoa->servicos_prestados->pluck('id');
-
 
     return $pessoa_retorno;
   }

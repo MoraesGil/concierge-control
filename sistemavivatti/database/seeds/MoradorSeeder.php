@@ -39,6 +39,13 @@ class MoradorSeeder extends Seeder
       $senha = 'nova'.$cpf3;
       $senha =  \Hash::make('teste'); //criptografia
 
+
+      if ($i ==1) {
+        $login = 'morador';
+        $senha =  \Hash::make('admin'); //criptografia
+        $condominio_id = 1;
+      }
+
       //cria usuario
       $novo_usuario = App\Usuario::create([
         'permissao'=>'m', 'login'=>strtolower($login), 'senha'=>$senha
@@ -63,17 +70,6 @@ class MoradorSeeder extends Seeder
           $novo_usuario->dados_pessoais->dependentes()->create(['nome'=>$faker->name, 'rg'=>$faker->numerify($string = '#########'),'data_nascimento'=>$faker->dateTimeThisCentury->format('d/m/Y')]);
         }
       }
-
-      if ($faker->boolean(80)) {
-        foreach (range(1,2) as $i) {
-          $a = $faker->randomLetter;
-          $b = $faker->randomLetter;
-          $c = $faker->randomLetter;
-          $novo_usuario->dados_pessoais->veiculos()->create(['placa'=>$a.$b.$c.'-'.$faker->randomNumber($nbDigits = 4)]);
-        }
-      }
-
-
     }
   }
 }

@@ -11,7 +11,6 @@ class Pessoa extends Model
   protected $fillable =
   ['usuario_id', 'nome', 'rg', 'cpf', 'cnpj', 'foto_url', 'data_nascimento', 'responsavel_id'];
 
-
   protected $hidden = ['dependentes'];
 
   protected $dates = ['data_nascimento'];
@@ -21,6 +20,11 @@ class Pessoa extends Model
 
 
   ////mutators
+  public function getNameAttribute()
+  {
+    return $this->attributes['nome'];
+  }
+
   public function getTotalDependentesAttribute()
   {
     return count($this->dependentes);
@@ -47,24 +51,47 @@ class Pessoa extends Model
 
   public function porteiros($condominio = null)
   {
-    if ($condominio) {
-      # code...
-    }
     return $this->whereIn('usuario_id',
     \DB::table('usuarios')
     ->where('permissao','p')->distinct()->pluck('id'));
   }
 
-  public function moradores($condominio = null)
+  public function moradores($usuarios=true, $condominio = null)
   {
-    if ($condominio) {
-      # code...
+    // lista apenas os moradores usuarios do sistema
+    if ($usuarios) {
+      return $this->whereHas('usuario', function($q){
+        $q->where('permissao', '=', 'm');
+      });
     }
-    return $this->whereIn('usuario_id',
-    \DB::table('usuarios')
-    ->where('permissao','m')->distinct()->pluck('id'));
+
+    //tras moradores e os respectivos dependentes...
+    $moradores_ids =  $this->whereHas('usuario', function($q){
+      $q->where('permissao', '=', 'm');
+    })->pluck('id');
+
+    $dependentes_ids =  $this->whereHas('responsavel', function($q) use ($moradores_ids)   {
+      $q->whereIn('id',$moradores_ids    );
+    })->pluck('id');
+
+    $moradores_ids = array_collapse([$moradores_ids,$dependentes_ids]);
+
+    return $this->whereIn('id',$moradores_ids);
+
   }
   //filtro por usuario
+
+
+  //filtro visitantes
+  public function visitantes($condominio = null)
+  {
+    $moradores_ids = $this->moradores(false)->pluck('id');
+    $porteiros_ids = $this->porteiros()->pluck('id');
+    $sindicos_ids = $this->sindicos()->pluck('id');
+    $todos = array_collapse([$moradores_ids,$porteiros_ids,$sindicos_ids]);
+
+    return $this->whereNotIn('id',$todos);
+  }
 
 
   //prestadores de servicos
@@ -77,6 +104,11 @@ class Pessoa extends Model
   public function servicos_prestados(){
     return $this->belongsToMany('App\Servico','servicos_prestador',
     'pessoa_id', 'servico_id');
+  }
+
+  public function getTotalServicosAttribute()
+  {
+    return count($this->servicos_prestados);
   }
 
   public function avaliacoes(){
@@ -100,7 +132,7 @@ class Pessoa extends Model
   //prestadores de servicos
   public function veiculos()
   {
-    return $this->hasMany('App\Veiculo','responsavel_id');
+    return $this->belongsToMany('App\Veiculo','usuarios_veiculo','pessoa_id','veiculo_id');
   }
 
   //filhos ou funcionarios
@@ -122,6 +154,12 @@ class Pessoa extends Model
   public function endereco()
   {
     return $this->hasOne('App\Endereco');
+  }
+
+
+  public function visitas()
+  {
+    return $this->hasMany('App\Visita','morador_id');
   }
 
   public function usuario()

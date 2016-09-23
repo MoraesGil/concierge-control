@@ -71,11 +71,11 @@
                         <td>{{$servico->nome}}</td>
                         <td class="text-center">
                           @if($servico->fornecedores_total > 0)
-                            <a href="{{url('servico/'.$servico->id.'/prestadores')}}" data-toggle="tooltip" data-placement="top" title="Ver Prestadores">
+                            <a href="{{url('prestadores?busca='.$servico->nome)}}" data-toggle="tooltip" data-placement="top" title="Ver Prestadores">
                               {{$servico->fornecedores_total}} <i class="fa fa-external-link"></i>
                             </a>
                           @else
-                            <a href="{{url('prestador/novo')}}" data-toggle="tooltip" data-placement="top" title="Adicionar Prestador">
+                            <a href="{{url('prestadores')}}" data-toggle="tooltip" data-placement="top" title="Adicionar Prestador">
                               0 <i class="fa fa-external-link"></i>
                             </a>
                           @endif

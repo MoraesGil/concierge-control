@@ -21,10 +21,7 @@ class Reserva extends Model
     return $this->belongsTo('App\Usuario');
   }
 
-  public function ManyToMany()
-  {
-    return $this->belongsToMany('App\Exemplo');
-  }
+
 
   const CREATED_AT = 'criado_em';
   const UPDATED_AT = 'atualizado_em';

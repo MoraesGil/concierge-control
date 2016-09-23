@@ -19,6 +19,12 @@
 
   <link href="{{url('/assets/css/sweetalert.css')}}" rel="stylesheet">
   <link href="{{url('/assets/css/bootstrap-select.min.css')}}" rel="stylesheet">
+  <link href="{{url('/assets/css/fullcalendar.min.css')}}" rel="stylesheet">
+
+
+  <style media="screen">
+  .typeahead { z-index: 1051; }
+  </style>
 </head>
 
 <body class="nav-md">
@@ -26,8 +32,10 @@
     <div class="main_container">
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
-          <div class="navbar nav_title" style="border: 0;">
-            <a href="index.html" class="site_title"><i class="fa fa-home"></i> <span>Vivatti</span></a>
+          <div class="navbar nav_title" style="background: #ededed" >
+            <div class="center-block" style="    width: 100px;  padding: 10px; ">
+              <img class="img-responsive " src="{{asset('assets/img/logo1.png')}}"  class="logo">
+            </div>
           </div>
 
           <div class="clearfix"></div>
@@ -104,7 +112,6 @@
 
           </div>
           <!-- /sidebar menu -->
-
         </div>
       </div>
 
@@ -169,15 +176,24 @@
   <!-- VUE JS Sripts -->
   <script src="{{url('/assets/js/vue.min.js')}}"></script>
   <script src="{{url('/assets/js/vue-resource.min.js')}}"></script>
-  <script src="{{url('/assets/js/vue-strap.min.js')}}"></script>
-
+  <script src="{{url('/assets/js/bootstrap3-typeahead.min.js')}}"></script>
+  <script src="{{url('/assets/js/fullcalendar.min.js')}}"></script>
 
   <script type="text/javascript">
   $('.data_mask').mask('00/00/0000');
-  $('.cpf_mask').mask('000.000.000-00', {reverse: true});
-  $('.cnpj_mask').mask('00.000.000/0000-00', {reverse: true});
+  $('.cpf_mask').mask('000.000.000-00');
+  $('.cnpj_mask').mask('00.000.000/0000-00');
   $('.cep_mask').mask('00000-000');
-  $('.placa_mask').mask('AAA-0000');
+
+  $('.cep_mask').mask('00000-000');
+
+  $('.typeahead').typeahead();
+
+  $('.placa_mask').mask('AAA-YYYY', {'translation': {
+    A: {pattern: /[A-Za-z]/},
+    Y: {pattern: /[0-9]/}
+  }});
+
   $('.fone_mask').mask('(00)0000-0000');
   var maskBehavior = function (val) {
     return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
@@ -187,8 +203,12 @@
   }};
 
   $('.cel_mask').mask(maskBehavior, options);
-  </script>
 
+  $('#calendar').fullCalendar({
+        // put your options and callbacks here
+  })
+
+  </script>
   @stack('script_level')
 
 </script>

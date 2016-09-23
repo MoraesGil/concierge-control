@@ -161,10 +161,10 @@
 
             <div class="ln_solid"></div>
             <div class="form-group">
-              <div class="col-md-6 col-md-offset-3"> 
+              <div class="col-md-6 col-md-offset-3">
                 <button id="send" type="submit" name="send" class="btn btn-success">Gravar</button>
               </div>
-            </div>
+            </div> 
 
             {!! Form::close() !!}
           </div>
@@ -196,6 +196,10 @@
             this.logradouro = r.data.logradouro;
             this.bairro = r.data.bairro;
             this.cidade = r.data.cidade+"/"+r.data.uf;
+          }else {
+            this.logradouro = '';
+            this.bairro = '';
+            this.cidade = '';
           }
         });
       }
