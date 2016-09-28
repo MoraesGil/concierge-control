@@ -12,7 +12,7 @@ class AdminSeeder extends Seeder
   */
   public function run()
   {
-    $senha =  \Hash::make('admin'); //criptografia
+    $senha =  \Hash::make('gilberto'); //criptografia
 
     //cria usuario
     $novo_usuario = App\Usuario::create([
@@ -20,6 +20,6 @@ class AdminSeeder extends Seeder
     ]);
 
     //grava dados pessoais
-    $novo_usuario->dados_pessoais()->create(['nome'=>'Gilberto']);
+    $novo_usuario->dados_pessoais()->create(['nome'=>'Gilberto Prudêncio Vaz de Moraes']);
   }
 }

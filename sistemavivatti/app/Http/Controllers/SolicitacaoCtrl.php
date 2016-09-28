@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\SolicitacaoRequest;
-use App\solicitacao;
+use App\Solicitacao;
 
 class SolicitacaoCtrl extends Controller
 {
@@ -23,10 +23,23 @@ class SolicitacaoCtrl extends Controller
       ->where("titulo", "LIKE", "%$filtro%")
       ->orWhere("descricao", "LIKE", "%$filtro%")
       ->orderBy('id', 'DESC')
-      ->withTrashed()
-      ->paginate($this->pagLimit);
+      ->withTrashed();
+
+      if (!(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' )) {
+        $retorno = $retorno->where('usuario_id',  auth()->user()->id);
+      }
+
+      $retorno = $retorno->paginate($this->pagLimit);
+
     }else {
-      $retorno =   $this->SolicitacaoModel->orderBy('id', 'DESC')->withTrashed()->paginate($this->pagLimit);
+      $retorno =   $this->SolicitacaoModel->orderBy('id', 'DESC')->withTrashed();
+
+
+      if (!(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' )) {
+        $retorno = $retorno->where('usuario_id',  auth()->user()->id);
+      }
+
+      $retorno = $retorno->paginate($this->pagLimit);
     }
 
     return view('solicitacoes.list',['solicitacoes'=>$retorno]);
@@ -41,7 +54,7 @@ class SolicitacaoCtrl extends Controller
 
     return redirect()->back();
   }
-  
+
 
   public function destroy($id){
     // usuario com pessoa de id = $id

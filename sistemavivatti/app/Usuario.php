@@ -29,9 +29,9 @@ class Usuario extends Authenticatable
 
   public function reservas()
   {
-    return $this->hasMany('App\Reserva');
+    return $this->hasMany('App\Evento');
   }
-  
+
   const CREATED_AT = 'criado_em';
   const UPDATED_AT = 'atualizado_em';
   const DELETED_AT = 'desativado_em';

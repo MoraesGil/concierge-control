@@ -39,22 +39,7 @@ class RecadoCtrl extends Controller
     \Session::flash('success_message','Recado cadastrado!');
 
     return redirect()->back();
-  }
-
-
-
-  public function update(recadoRequest $request, $id){
-
-    $recado = $this->RecadoModel->find($id);
-    if (!$recado) {
-      return redirect('recados');
-    }
-
-    $recado->update($request->only('nome'));
-
-    \Session::flash('success_message','Serviço atualizado!');
-    return redirect()->back();
-  }
+  } 
 
   public function destroy($id){
     // usuario com pessoa de id = $id

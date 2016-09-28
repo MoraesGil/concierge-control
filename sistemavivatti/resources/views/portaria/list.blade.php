@@ -175,7 +175,8 @@
       moradores:[],
       visitantes:[],
       placas:[],
-      erros:[]
+      erros:[],
+      success_message:''
     },
 
     ready:function(){

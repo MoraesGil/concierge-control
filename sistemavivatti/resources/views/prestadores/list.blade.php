@@ -181,7 +181,9 @@
     },
 
     ready:function(){
-
+      $(document).on('hide.bs.modal','#modalNota', function () {
+        location.reload();
+      });
     },
 
     methods:{

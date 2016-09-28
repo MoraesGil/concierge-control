@@ -8,6 +8,8 @@ Route::get('/login','UsuarioCtrl@login');
 Route::post('/login','UsuarioCtrl@postLogin');
 Route::get('/logout','UsuarioCtrl@sair');
 
+Route::get('/','UsuarioCtrl@login');
+
 Route::get('/cep/{id}',function($cep){
   return \Correios::cep($cep);
 });
@@ -17,7 +19,6 @@ Route::get('mail',function(){
   // dd(Config::get('mail'));
   return 'naooo';
 });
-
 
 
 Route::group(['middleware'=>'auth'], function () {
@@ -32,6 +33,12 @@ Route::group(['middleware'=>'auth'], function () {
   Route::put('/morador/{id}/editar','CondominoCtrl@update');//grava
   Route::get('/morador/{id}/excluir','CondominoCtrl@destroy');//func
   Route::get('/morador/{id}/alterarStatus','CondominoCtrl@changeStatus');//func
+
+  // ROTAS MORADOR CONTRATOS
+  Route::get('/morador/{morador_id}/contratos','CondominoCtrl@index');//list
+  Route::post('/morador/{morador_id}/contrato/novo','CondominoCtrl@store');//func
+  Route::delete('/morador/{morador_id}/contrato/{cocontrato_id}/excluir','CondominoCtrl@destroy');//func
+
 
   // ROTAS DEPENDENTES
   Route::get('/morador/{morador_id}/dependentes','DependenteCtrl@index');//list
@@ -79,7 +86,6 @@ Route::group(['middleware'=>'auth'], function () {
   Route::put('/prestador/{prestador_id}/funcionario/{funcionario_id}/editar','FuncionarioCtrl@update');//func
   Route::get('/prestador/{prestador_id}/funcionario/{funcionario_id}/excluir','FuncionarioCtrl@destroy');//func
 
-
   // ROTAS SERVIÇOS
   Route::get('/servicos','ServicoCtrl@index');//list
   Route::get('/servico/novo','ServicoCtrl@create');//form
@@ -105,10 +111,23 @@ Route::group(['middleware'=>'auth'], function () {
   Route::get('/solicitacao/{id}/excluir','SolicitacaoCtrl@destroy');//func
   Route::get('/solicitacao/{id}/finalizar','SolicitacaoCtrl@finalizar');//func
 
-  // ROTAS Recado
+  // ROTAS recados
+  Route::get('/recados','RecadoCtrl@index');//list
+  Route::post('/recado/novo','RecadoCtrl@store');//grava
+  Route::get('/recado/{id}/excluir','RecadoCtrl@destroy');//func
+
+  // ROTAS Eventos
   Route::get('/eventos','EventoCtrl@index');//list
-  Route::post('/eventos/novo','EventoCtrl@store');//grava
-  Route::get('/eventos/{id}/excluir','EventoCtrl@destroy');//func
+  Route::get('/evento/novo','EventoCtrl@create');//form
+  Route::post('/evento/novo','EventoCtrl@store');//grava
+  Route::get('/evento/{id}/editar','EventoCtrl@edit');//form
+  Route::put('/evento/{id}/editar','EventoCtrl@update');//grava
+  Route::get('/evento/{id}/excluir','EventoCtrl@destroy');//func
+
+  // ROTAS Convidados evento
+  Route::get('/evento/{evento_id}/convidados','ConvidadoCtrl@index');//list
+  Route::post('/evento/{evento_id}/convidado/novo','ConvidadoCtrl@store');//func
+  Route::delete('/evento/{evento_id}/convidado/{convidado_id}/excluir','ConvidadoCtrl@destroy');//func
 
   // ROTAS LIVRO PORTARIA
   Route::get('/portaria','PortariaCtrl@index');//list

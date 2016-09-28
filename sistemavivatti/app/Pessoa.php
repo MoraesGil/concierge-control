@@ -15,14 +15,17 @@ class Pessoa extends Model
 
   protected $dates = ['data_nascimento'];
 
-
   public $timestamps = false;
 
-
-  ////mutators
-  public function getNameAttribute()
+  //mutators
+  public function setCpfAttribute($value)
   {
-    return $this->attributes['nome'];
+    $this->attributes['cpf'] = $this->mask($value,'###.###.###-##');
+  }
+
+  public function setCnpjAttribute($value)
+  {
+    $this->attributes['cnpj'] = $this->mask($value,'##.###.###/####-##');
   }
 
   public function getTotalDependentesAttribute()
@@ -165,6 +168,31 @@ class Pessoa extends Model
   public function usuario()
   {
     return $this->belongsTo('App\Usuario')->withTrashed();
+  }
+
+  // http://blog.clares.com.br/php-mascara-cnpj-cpf-data-e-qualquer-outra-coisa/
+  private function mask($val, $mask)
+  {
+    $val = str_replace(".","",$val);
+    $val = str_replace("-","",$val);
+
+    $maskared = '';
+    $k = 0;
+    for($i = 0; $i<=strlen($mask)-1; $i++)
+    {
+      if($mask[$i] == '#')
+      {
+        if(isset($val[$k]))
+        $maskared .= $val[$k++];
+      }
+      else
+      {
+        if(isset($mask[$i]))
+        $maskared .= $mask[$i];
+      }
+    }
+
+    return $maskared;
   }
 
 

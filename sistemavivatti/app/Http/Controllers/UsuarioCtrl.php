@@ -12,16 +12,25 @@ use App\Recado;
 use App\Pessoa;
 use App\Servico;
 
+use App\Evento;
+
 class UsuarioCtrl extends Controller
 {
-  public function home(Recado $recado, Pessoa $pes, Servico $ser){
+  public function home(Recado $recado, Pessoa $pes, Servico $ser, Evento $eventos){
+
+    $calendar = \Calendar::addEvents($eventos->all())->setOptions([ //set fullcalendar options
+      'header'=> [
+        'right'=> 'prev,next today',
+      ] 
+    ]);
 
     $data = array(
       'recados'=>$recado->orderBy('id', 'DESC')->limit(5)->get(),
       'total_pessoas' => count($pes->all()),
       'total_moradores' => count($pes->moradores()->get()),
       'total_prestadores' => count($pes->prestadores()->get()),
-      'total_servicos' => count($ser->all())
+      'total_servicos' => count($ser->all()),
+      'calendar'=>$calendar
     );
 
     return view('home',$data);
@@ -52,7 +61,7 @@ class UsuarioCtrl extends Controller
     $usuario = Usuario::where('login','=',$request->get('login'))->withTrashed()->first();
 
     //recupero usuario e se ele nao for nulo comparo a senha.
-    if(\Hash::check('admin', $usuario!==null ? $usuario->senha : ''))
+    if(\Hash::check($request->get('senha'), $usuario!==null ? $usuario->senha : ''))
     {
       if (Auth::loginUsingId($usuario->id,$request->has('remember'))) {
         return redirect('/home');
@@ -62,7 +71,10 @@ class UsuarioCtrl extends Controller
     }
     else
     {
-      return Auth::check() ? 'on' : 'off';
+      // dd($request->all());
+      // return Auth::check() ? 'on' : 'off';
+      return redirect('/login')
+      ->withErrors(['teste']);
     }
   }
 

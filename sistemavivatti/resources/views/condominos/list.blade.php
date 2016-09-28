@@ -3,6 +3,37 @@
 @section('content')
   <!-- page content -->
   <div class="right_col" role="main" id="app">
+    <!-- Modal -->
+    <div class="modal fade" id="modalContratos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Contrato de @{{morador.nome}}</h4>
+          </div>
+          <div class="modal-body">
+
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="file" name="name"  class="form-control" value="" >
+              </div>
+              <button type="submit" class="btn btn-default pull-right">Adicionar Contrato</button>
+            </form>
+
+            <hr>
+            <div class="well well-md" >
+              <a href="#" class="btn  btn-default pull-right"><i class="fa fa-times"></i></a>
+              <h4>Click para baixar</h4>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="">
       <div class="page-title">
         <div class="title_left">
@@ -76,11 +107,11 @@
                         <td style="text-align:center">
 
                           @if($morador->total_dependentes>0)
-                            <a href="{{url('morador/'.$morador->id.'/dependentes')}}" data-toggle="tooltip" data-placement="top" title="Ver funcionarios">
+                            <a href="{{url('morador/'.$morador->id.'/dependentes')}}" data-toggle="tooltip" data-placement="top" title="Ver dependentes">
                               {{$morador->total_dependentes}} <i class="fa fa-mail-reply"></i>
                             </a>
                           @else
-                            <a href="{{url('morador/'.$morador->id.'/dependente/novo')}}" data-toggle="tooltip" data-placement="top" title="Adicionar Funcionario">
+                            <a href="{{url('morador/'.$morador->id.'/dependente/novo')}}" data-toggle="tooltip" data-placement="top" title="Adicionar dependente">
                               N/A <i class="fa fa-plus-square-o"></i>
                             </a>
                           @endif
@@ -97,7 +128,7 @@
                           @endif
                         </td>
                         <td style="text-align:center">
-                          <a @click="loadContratos('{{$morador->id}}')" data-toggle="modal" data-target="#myModal" class="btn btn-default btn-xs"> <i class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Contrato"></i></a>
+                          <a @click="loadContratos('{{$morador}}')" data-toggle="modal" data-target="#myModal" class="btn btn-default btn-xs"> <i class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Contratos"></i></a>
 
                           <a href="{{url('morador/'.$morador->id.'/editar')}}" class="btn btn-default btn-xs"> <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Alterar"></i></a>
 
@@ -119,59 +150,44 @@
       </div>
     </div>
   </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Contrato do Morador</h4>
-        </div>
-        <div class="modal-body">
-
-          <form class="form-inline">
-            <div class="form-group">
-              <input type="file" name="name"  class="form-control" value="" >
-            </div>
-            <button type="submit" class="btn btn-default pull-right">Adicionar Contrato</button>
-          </form>
-
-          <hr>
-          <div class="well well-md" >
-            <a href="#" class="btn  btn-default pull-right"><i class="fa fa-times"></i></a>
-            <h4>Click para baixar</h4>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- /page content -->
 @endsection
 
 
 @push('script_level')
+
   <script type="text/javascript">
+  Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
   var vm = new Vue({
     el: '#app',
 
     data: {
-
-
+      contratos:[],
+      convidado : {
+        id : null,
+        nome :'',
+        pessoa_id : null
+      },
+      erros:[],
+      success_message:''
     },
-
+    computed: {
+      showErro: function(){
+        return (this.erros.length > 0);
+      },
+      showSuccess: function(){
+        return (this.success_message.length > 0);
+      }
+    },
     ready:function(){
 
     },
 
     methods:{
       loadContratos:function(morador_id){
-
+        $('#modalContratos').modal('show');
       },
+
       excluir:function(morador_id){
         swal({
           title: "Tem certeza?",
@@ -197,7 +213,8 @@
           cancelButtonText: "Cancelar",
           closeOnConfirm: false
         },function(){
-          window.location.href =  "/morador/"+morador_id+"/excluir";
+
+
         });
       }
     }

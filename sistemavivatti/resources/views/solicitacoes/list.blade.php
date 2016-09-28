@@ -20,6 +20,24 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
+            @if(Session::has('success_message'))
+              <div class="alert alert-success">
+                {{Session::get('success_message')}}
+              </div>
+            @endif
+
+            @if ($errors->any())
+              <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @foreach($errors->all() as $error)
+                  <ul>
+                    <li>
+                      <h4> {{ $error }}</h4>
+                    </li>
+                  </ul>
+                @endforeach
+              </div>
+            @endif
             {{-- incluindo POST --}}
             {!! Form::open(['url' => 'solicitacao/novo', 'class' => 'form-horizontal form-label-left']) !!}
 
@@ -58,24 +76,7 @@
             {!! Form::close() !!}
           </div>
         </div>
-        @if(Session::has('success_message'))
-          <div class="alert alert-success">
-            {{Session::get('success_message')}}
-          </div>
-        @endif
 
-        @if ($errors->any())
-          <div class="alert alert-warning">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            @foreach($errors->all() as $error)
-              <ul>
-                <li>
-                  <h4> {{ $error }}</h4>
-                </li>
-              </ul>
-            @endforeach
-          </div>
-        @endif
       </div>
     </div>
   </div>
@@ -114,9 +115,8 @@
               <div class="x_panel">
                 <div class="x_content">
                   <div class="dashboard-widget-content">
-
                     <ul class="list-unstyled timeline widget">
-                      @foreach($solicitacoes as $solicitacao)
+                      @forelse($solicitacoes as $solicitacao)
                         <li>
                           <div class="block">
                             <div class="block_content">
@@ -132,11 +132,7 @@
                                   @endif
 
                                   @if(!$solicitacao->finalizado_em)
-                                    @if(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' || auth()->user()->id == $solicitacao->usuario->id)
-                                      <a @click.prevent="finalizar('{{$solicitacao->id}}')" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Está em Aberto clique para Finalizar">Finalizar</a>
-                                    @else
-                                      <button type="button" class="btn btn-default btn-xs">Aberto</button>
-                                    @endif
+                                    <a @click.prevent="finalizar('{{$solicitacao->id}}')" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Está em Aberto clique para Finalizar">Finalizar</a>
                                   @else
                                     <button type="button" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="Encerrado em {{$solicitacao->finalizado_em}}">Finalizado</button>
                                   @endif
@@ -150,14 +146,26 @@
 
                               </h2>
                               <div class="byline">
-                                <span>{{$solicitacao->criado_em}}</span> por <a>  {{ $solicitacao->usuario->id == auth()->user()->id ? 'Mim' : $solicitacao->anonimo ? "Anônimo" : $solicitacao->usuario->dados_pessoais->nome}}</a>
+                                {{$solicitacao->usuario->id != auth()->user()->id }}
+                                <span>{{$solicitacao->criado_em}}</span> por
+                                <a>
+                                  @if($solicitacao->usuario->id == auth()->user()->id )
+                                    Mim
+                                  @elseif($solicitacao->anonimo)
+                                    Anônimo
+                                  @else
+                                    {{$solicitacao->usuario->dados_pessoais->nome}}
+                                  @endif
+                                </a>
                               </div>
                               <p class="excerpt">{{$solicitacao->descricao}}
                               </p>
                             </div>
                           </div>
                         </li>
-                      @endforeach
+                      @empty
+                        <h3>Não há solicitações com esses parametros</h3>
+                      @endforelse
                     </ul>
                   </div>
                 </div>

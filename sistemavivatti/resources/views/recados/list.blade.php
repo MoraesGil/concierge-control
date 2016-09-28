@@ -101,7 +101,7 @@
                   <div class="dashboard-widget-content">
 
                     <ul class="list-unstyled timeline widget">
-                      @foreach($recados as $recado)
+                      @forelse($recados as $recado)
                         <li>
                           <div class="block">
                             <div class="block_content">
@@ -114,7 +114,14 @@
                                 @endif
                               </h2>
                               <div class="byline">
-                                <span>{{$recado->criado_em}}</span> por <a>  {{ $recado->usuario->id == auth()->user()->id ? 'Mim' : $recado->usuario->dados_pessoais->nome}}</a>
+                                <span>{{$recado->criado_em}}</span> por
+                                <a href="#">                                   
+                                  @if($recado->usuario->id == auth()->user()->id )
+                                    Mim
+                                  @else
+                                    {{$recado->usuario->dados_pessoais->nome}}
+                                  @endif
+                                </a>
                               </div>
 
                               <p class="excerpt">{{$recado->descricao}}
@@ -122,7 +129,9 @@
                             </div>
                           </div>
                         </li>
-                      @endforeach
+                      @empty
+                        <h3 style="" >Não há recados com esses parametros</h3>
+                      @endforelse
                     </ul>
                   </div>
                 </div>

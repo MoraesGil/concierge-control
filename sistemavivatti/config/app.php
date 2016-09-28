@@ -160,6 +160,7 @@ return [
     ValidadorCpf\CpfServiceProvider::class,
 
     Cagartner\CorreiosConsulta\ServiceProvider::class,
+    MaddHatter\LaravelFullcalendar\ServiceProvider::class,
 
   ],
 
@@ -211,7 +212,7 @@ return [
     'Html' => Collective\Html\HtmlFacade::class,
 
     'Correios'    => Cagartner\CorreiosConsulta\Facade::class,
-
+    'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
   ],
 
 ];

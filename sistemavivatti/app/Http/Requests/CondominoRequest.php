@@ -34,7 +34,7 @@ class CondominoRequest extends Request
       case 'POST':
       {
         return [
-          'nome' =>'required',
+          'nome' =>'required|unique:pessoas,nome,NULL,id',
           'rg' =>'required',
           'cpf' =>'required|cpf|unique:pessoas,cpf,NULL,id',
           'telefone' =>'required',
@@ -51,8 +51,8 @@ class CondominoRequest extends Request
       case 'PUT':
       case 'PATCH':
       {
-        return [ 
-          'nome' =>'required',
+        return [
+          'nome' =>'required|unique:pessoas,nome,'.$this->route('id').',id',
           'rg' =>'required',
           'cpf' =>'required|cpf|unique:pessoas,cpf,'.$this->route('id').',id',
           'telefone' =>'required|min:',

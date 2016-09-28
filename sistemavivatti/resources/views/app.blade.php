@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta id="token" name="token" value="{{csrf_token()}}">
   <title>Vivatti Systema</title>
 
   <!-- Bootstrap -->
@@ -73,10 +73,9 @@
                   <ul class="nav child_menu">
                     <li><a href="{{url('/moradores')}}">Moradores</a></li>
                     <li><a href="{{url('/porteiros')}}">Porteiros</a></li>
-                    <li><a href="{{url('/reservas')}}">Reserva de Salão</a></li>
+                    <li><a href="{{url('/eventos')}}">Reservas de Salão</a></li>
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                     <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
-                    <li><a href="{{url('/eventos')}}">Calendário Eventos</a></li>
                     <li><a href="{{url('/servicos')}}">Serviços</a></li>
                     <li><a href="{{url('/prestadores')}}">Prestadores de Serviços</a></li>
                     <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
@@ -84,7 +83,6 @@
                 </li>
                 <li><a><i class="fa fa-map-marker"></i> Portaria <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="{{url('/eventos')}}">Calendário Eventos</a></li>
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                     <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
                     <li><a href="{{url('/servicos')}}">Serviços</a></li>
@@ -95,7 +93,7 @@
                 <li>
                   <a><i class="fa fa-table"></i> Condôminos <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="{{url('/reservas')}}">Reserva de Salão</a></li>
+                    <li><a href="{{url('/eventos')}}">Reservas de Salão</a></li>
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                     <li><a href="{{url('/contrato')}}">Download Contrato</a></li>
                     <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
@@ -163,8 +161,7 @@
   </div>
 
   <!-- jQuery -->
-  <script src="{{url('/vendors/jquery/dist/jquery.min.js')}}"></script>
-  <!-- Bootstrap -->
+  <script src="{{url('/vendors/jquery/dist/jquery.min.js')}}"></script>  <!-- Bootstrap -->
   <script src="{{url('/vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 
   <!-- Custom Theme Scripts -->
@@ -177,7 +174,10 @@
   <script src="{{url('/assets/js/vue.min.js')}}"></script>
   <script src="{{url('/assets/js/vue-resource.min.js')}}"></script>
   <script src="{{url('/assets/js/bootstrap3-typeahead.min.js')}}"></script>
+  <script src="{{url('/assets/js/moment.min.js')}}"></script>
   <script src="{{url('/assets/js/fullcalendar.min.js')}}"></script>
+  <!-- traducao full calendar pt-br -->
+  <script src="{{url('/assets/js/fullcalendarlang-pt-br.js')}}"></script>
 
   <script type="text/javascript">
   $('.data_mask').mask('00/00/0000');
@@ -203,10 +203,6 @@
   }};
 
   $('.cel_mask').mask(maskBehavior, options);
-
-  $('#calendar').fullCalendar({
-        // put your options and callbacks here
-  })
 
   </script>
   @stack('script_level')

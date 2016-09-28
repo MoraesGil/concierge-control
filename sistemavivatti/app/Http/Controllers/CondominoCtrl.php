@@ -20,7 +20,7 @@ class CondominoCtrl extends Controller
   }
 
   public function index(Request $request){
-    $filtro = $request->get('busca');
+    $filtro = trim($request->get('busca'))  ;
 
     if ($filtro) {
       $retorno = $this->PessoaModel->moradores()
@@ -41,7 +41,7 @@ class CondominoCtrl extends Controller
   }
 
   public function store(CondominoRequest $request){
-     
+
     $cpf3 = substr($request->get('cpf'), 0, 3);//3 primeiros digitos cpf
 
     $login = substr(str_replace(' ', '', $request->get('nome')), 0, 5);//nome 5 primeiras letras
@@ -145,6 +145,8 @@ class CondominoCtrl extends Controller
     }
     return redirect()->back();
   }
+
+ 
 
 
 }
