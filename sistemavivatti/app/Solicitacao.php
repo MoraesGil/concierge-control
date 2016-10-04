@@ -18,7 +18,7 @@ class Solicitacao extends Model
 
   public function usuario()
   {
-    return $this->belongsTo('App\Usuario');
+    return $this->belongsTo('App\Usuario')->withTrashed();;
   }
 
   public function getCriadoEmAttribute($value)

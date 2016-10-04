@@ -16,7 +16,7 @@ class Convidado extends Model
   {
     return $this->belongsTo('App\Pessoa');
   }
-  
+
   public function reserva()
   {
     return $this->belongsTo('App\Reserva');

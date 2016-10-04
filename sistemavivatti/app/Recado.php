@@ -13,7 +13,7 @@ class Recado extends Model
 
   public function usuario()
   {
-    return $this->belongsTo('App\Usuario');
+    return $this->belongsTo('App\Usuario')->withTrashed();;
   }
 
   public function getCriadoEmAttribute($value)
@@ -21,5 +21,5 @@ class Recado extends Model
     return \Carbon\Carbon::parse($value)->format('d/m/Y H:i');
   }
 
-  const CREATED_AT = 'criado_em'; 
+  const CREATED_AT = 'criado_em';
 }

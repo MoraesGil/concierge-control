@@ -17,9 +17,14 @@ class SindicoCtrl extends Controller
     $this->CondominioModel = $c;
     $this->UsuarioModel = $u;
     $this->pagLimit = 7;
+
+    if (auth()->user()->permissao != 'a') {
+      \Redirect::to('home')->send();
+    } 
   }
 
   public function index(Request $request){
+
     $filtro = $request->get('busca');
 
     if ($filtro) {
@@ -29,7 +34,7 @@ class SindicoCtrl extends Controller
       ->paginate($this->pagLimit);
     }else {
       $retorno = $this->PessoaModel->sindicos()->paginate($this->pagLimit);
-    } 
+    }
     return view('sindicos.list',['sindicos'=>$retorno]);
   }
 

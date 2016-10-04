@@ -17,7 +17,9 @@
             <div class="x_title">
               <h2>Relação</h2>
               <ul class="nav navbar-right panel_toolbox">
+                @if( auth()->user()->permissao != 'm')
                 <li class="list"><a href="{{url('prestador/novo')}}">NOVO <i class="fa fa-plus"></i></a></li>
+                @endif                
               </ul>
               <div class="clearfix">
               </div>
@@ -65,7 +67,9 @@
                       <th>Serviços</th>
                       <th style="text-align:center;">Qtd. Funcionarios</th>
                       <th style="text-align:center;">Média</th>
+                      @if( auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' )
                       <th style="text-align:center"> Opções </th>
+                      @endif
                     </tr>
                   </thead>
                   <tbody>
@@ -80,13 +84,17 @@
                             <span class="cnpj_mask">{{$prestador->cnpj}}</span>
                           @endif
                         </td>
-                        <td><span class="fone_mask">{{$prestador->contatos->telefone }}</span></td>
+                        <td>
+                          <span class="fone_mask">{{$prestador->contatos->telefone }}</span>
+                        </td>
 
                         <td class="text-center">
-                          <span data-toggle="tooltip" data-placement="top" title="@foreach($prestador->servicos_prestados as $servico)
+                          <span data-toggle="tooltip" data-placement="top"
+                          title="
+                          @foreach($prestador->servicos_prestados as $servico)
                             {{$servico->nome}},
-                          @endforeach">{{$prestador->total_servicos}}</span>
-
+                          @endforeach
+                          ">{{$prestador->total_servicos}} </span>
 
                         </td>
                         <td style="text-align:center">
@@ -115,13 +123,15 @@
                           </a>
                         </td>
 
+                        @if( auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' )
+                          <td style="text-align:center">
+                            <a href="{{url('prestador/'.$prestador->id.'/editar')}}" class="btn btn-default btn-xs"> <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Alterar"></i></a>
+                            <a @click.prevent="excluir('{{$prestador->id}}')" href="#" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
+                              <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
+                            </a>
+                          </td>
+                        @endif
 
-                        <td style="text-align:center">
-                          <a href="{{url('prestador/'.$prestador->id.'/editar')}}" class="btn btn-default btn-xs"> <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Alterar"></i></a>
-                          <a @click.prevent="excluir('{{$prestador->id}}')" href="#" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
-                            <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
-                          </a>
-                        </td>
                       </tr>
                     @empty
                       <h3 class="text-center"> Nenhum prestador encontrado com termo '{{$_GET["busca"]}}'</h3>

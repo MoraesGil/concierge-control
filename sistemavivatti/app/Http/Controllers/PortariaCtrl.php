@@ -19,6 +19,9 @@ class PortariaCtrl extends Controller
     $this->pagLimit = 10;
     $this->autoCompleteLimit = 5;
 
+    if (auth()->user()->permissao == 'm') {
+      \Redirect::to('home')->send();
+    }
   }
 
   public function index(Request $request){
@@ -100,6 +103,11 @@ class PortariaCtrl extends Controller
   }
 
   public function destroy($id){
+
+    if (auth()->user()->permissao == 'm' || auth()->user()->permissao == 'p' ) {
+      return redirect('visitas')->withErrors(['Você não tem permissão para excluir eventos']);
+    }
+
     // usuario com pessoa de id = $id
     $visita =  $this->VisitaModel->find($id);
 
@@ -146,7 +154,7 @@ class PortariaCtrl extends Controller
     ->select('id','nome')
     ->limit(50)
     ->get();
-  
+
     $data_transformed =  array_map([$this, 'transform_data'], $retorno->toArray());
 
     return $data_transformed;
@@ -183,6 +191,4 @@ class PortariaCtrl extends Controller
 
     return $data_transformed;
   }
-
-
 }

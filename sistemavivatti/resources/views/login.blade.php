@@ -15,7 +15,7 @@
       <input id="login" type="text" name="login" placeholder="Login" maxlength="12" value="{{ old('login') }}">
       <input id="senha" type="password" name="senha" placeholder="******" maxlength="8">
       <input type="submit" name="envia" value="Entrar">
-      <a href="" title="Esqueci minha senha">Esqueceu a senha? <i>Clique aqui</i></a>
+      {{-- <a href="" title="Esqueci minha senha">Esqueceu a senha? <i>Clique aqui</i></a> --}}
     </form>
   </div>
 

@@ -13,8 +13,7 @@ class ConvidadoCtrl extends Controller
 {
   public function __construct(Evento $p){
     $this->EventoModel = $p;
-    $this->pagLimit = 10;
-
+    $this->pagLimit = 10; 
   }
 
   public function index($evento_id){
@@ -24,13 +23,13 @@ class ConvidadoCtrl extends Controller
     if (!$evento) {
       return Response::json(['log'=>'Evento não encontrado'], 404);
     }
-    $retorno = $evento->convidados;
+    $retorno = $evento->convidados()->orderBy('id', 'desc')->get();
 
     $data_transformed =  array_map([$this, 'transform_data'], $retorno->toArray());
 
     return Response::json($data_transformed, 200);
   }
- 
+
   private function transform_data($obj){
     return [
       'id'=>$obj['id'],

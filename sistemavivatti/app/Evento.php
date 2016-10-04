@@ -44,7 +44,7 @@ class Evento extends Model implements Event
 
   public function usuario()
   {
-    return $this->belongsTo('App\Usuario');
+    return $this->belongsTo('App\Usuario')->withTrashed();
   }
 
   const CREATED_AT = 'criado_em';
@@ -126,7 +126,7 @@ class Evento extends Model implements Event
         ?  BETWEEN data_entrada AND data_saida)',
         [$id,$data_entrada,$data_saida])) == 0;
     }
- 
+
     return count(\DB::select('SELECT id FROM eventos
       WHERE
       ?   BETWEEN data_entrada AND data_saida

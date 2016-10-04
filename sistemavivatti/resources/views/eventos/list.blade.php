@@ -2,73 +2,80 @@
 
 @section('content')
 
+<style media="screen">
+.scroll tr {
+  width: 100%;
+  display: inline-table;
+}
+
+.scroll table {
+  height:300px;
+}
+.scroll tbody {
+  overflow-y: scroll;
+  height: 200px;
+  width: 95%;
+  position: absolute;
+}
+.tableScroll{
+  height: 220px;
+}
 </style>
+
 <!-- page content -->
 <div class="right_col" role="main" id="app">
+  <input type="hidden" v-model="usuario.id"  value="{{auth()->user()->id}}">
+  <input type="hidden" v-model="usuario.permissao" value="{{auth()->user()->permissao}}">
 
   <div id="modalConvidados" class="modal  fade ">
     <div class="modal-dialog" >
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h4>Seus convidados para o evento</h4>
+          <h4>Convidados para o evento</h4>
           @{{evento.data_entrada}} - @{{evento.data_saida}}
         </div>
         <div class="modal-body">
-          <form class='form-horizontal'>
-            <input id="convidado" @click.prevent v-on:keyup="fetchVisitante" v-on:blur="setVisitante" v-model="convidado.nome" type='text' class='form-control input-lg typeahead' placeholder='Nome do Convidado'>
-            <a @click.prevent="addConvidado()" class='btn btn-lg btn-default btn-block' style="margin-top: 5px;">Adicionar </a>
-          </form>
+          {{-- alterarConvidadosPermissao --}}
+          <template v-if="alterarConvidadosPermissao">
+            <form class='form-horizontal'>
+              <input id="convidado" @click.prevent v-on:keyup="fetchVisitante" v-on:blur="setVisitante" v-model="convidado.nome" type='text' class='form-control input-lg typeahead' placeholder='Nome do Convidado'>
+              <a @click.prevent="addConvidado()" class='btn btn-lg btn-default btn-block' style="margin-top: 5px;">Adicionar </a>
+            </form>
 
-          <div class="alert alert-success" v-show="showSuccess">
-            <ul>
-              <li>@{{success_message}}</li>
-            </ul>
-          </div>
-
-          <div class="alert alert-warning" v-show="showErro">
-            <ul v-for="erro in erros">
-              <li>
-                @{{erro}}
-              </li>
-            </ul>
-          </div>
-          <table class="table table-striped scrooltable">
-            <thead>
-              <tr>
-                <th>Nome</th>
-              </tr>
-            </thead>
-            <tbody class="scrool">
-              <tr v-for="convidado in convidados">
-                <td>@{{convidado.nome}}
-                  <span class="pull-right">
-                    <i v-if="convidado.pessoa_id>0" class="fa fa-user"></i>
-                    <a @click.prevent="removeConvidado(convidado)" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
-                      <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
-                    </a>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Pronto</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="modalCalendario" class="modal  fade ">
-    <div class="modal-dialog" >
-      <div class="modal-content">
-        <div class="modal-header text-center">
-          <h4>Escolha uma data disponivel para seu evento</h4>
-        </div>
-        <div class="modal-body">
-          <div class="container">
-            <div id="calendar">
+            <div class="alert alert-success" v-show="showSuccess">
+              <ul>
+                <li>@{{success_message}}</li>
+              </ul>
             </div>
+
+            <div class="alert alert-warning" v-show="showErro">
+              <ul v-for="erro in erros">
+                <li>
+                  @{{erro}}
+                </li>
+              </ul>
+            </div>
+          </template>
+          <div class="tableScroll">
+            <table class="table table-striped scroll ">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                </tr>
+              </thead>
+              <tbody class="scroll ">
+                <tr v-for="convidado in convidados">
+                  <td>@{{convidado.nome}}
+                    <span class="pull-right" v-if="alterarConvidadosPermissao">
+                      <i v-if="convidado.pessoa_id>0" class="fa fa-user"></i>
+                      <a @click.prevent="removeConvidado(convidado)" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
+                        <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
+                      </a>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="modal-footer">
@@ -92,7 +99,6 @@
           <div class="x_title">
             <h2>Registros</h2>
             <ul class="nav navbar-right panel_toolbox">
-              <li class="list"><a @click.prevent="loadCalendar()" href="#">Mini Calendário <i class="fa fa-calendar"></i></a></li>
               <li class="list"><a href="{{url('evento/novo')}}">NOVO <i class="fa fa-plus"></i></a></li>
             </ul>
             <div class="clearfix">
@@ -130,7 +136,6 @@
                   @endforeach
                 </div>
               @endif
-
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -141,7 +146,7 @@
                     @if(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's')
                       <th>Agendado Por</th>
                       <th class="text-center"> Opções </th>
-                    @endif  
+                    @endif
                   </tr>
                 </thead>
                 <tbody  >
@@ -186,9 +191,6 @@
       </div>
     </div>
   </div>
-
-
-
 </div>
 
 @endsection
@@ -197,29 +199,15 @@
 @push('script_level')
   <script type="text/javascript">
 
-  $('#calendar').fullCalendar({
-    header: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'month'
-    },
-    selectable:true,
-    selectHelper:true,
-    editable:true,
-    eventLimit:true,
-
-    select: function(start, end) {
-       $.getScript('/events/new', function() {});
-
-       calendar.fullCalendar('unselect');
-     },
-  });
-
   Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
   var vm = new Vue({
     el: '#app',
 
     data: {
+      usuario : {
+        id : 0,
+        permissao:''
+      },
       convidados:[],
       convidado : {
         id : null,
@@ -231,6 +219,9 @@
     },
 
     computed: {
+      alterarConvidadosPermissao:function(){
+        return (this.usuario.permissao == 'a' || this.usuario.id == this.evento.usuario_id);
+      },
       showErro: function(){
         return (this.erros.length > 0);
       },
@@ -243,40 +234,36 @@
       $(document).on('hide.bs.modal','#modalConvidados', function () {
         location.reload();
       });
+
     },
 
     methods:{
-      loadCalendar:function(){
-        $('#modalCalendario').modal('show');
-
-        $('#modalCalendario').on('shown.bs.modal', function () {
-          $("#calendar").fullCalendar('render');
-        });
-      },
-
       fetchVisitante:function(){
-        console.log(this.convidado.nome);
         this.$http.get('/portaria/getvisitantes?busca='+this.convidado.nome).then((response) => {
-          $("#convidado").data('typeahead').source = response.data;
+          var autocomplete = $("#convidado").typeahead();
+          autocomplete.data('typeahead').source = response.data;
         });
       },
-      loadConvidados:function(evento_id){
+      loadConvidados:function(evento){
         // GET /someUrl
         $('#modalConvidados').modal('show');
-        this.fetchConvidados(evento_id);
+        this.fetchConvidados(evento);
       },
       fetchConvidados : function(evento){
         this.success_message = '';
         this.erros = [];
 
         this.$set('evento', JSON.parse(evento)); //set evento
-        console.log(evento);
+        // console.log(this.evento.usuario_id);
         this.$http.get('/evento/'+this.evento.id+'/convidados').then((response) => {
           this.$set('convidados', response.data);
         });
         this.convidados;
       },
       addConvidado : function(){
+        this.success_message = '';
+        this.erros = [];
+
         current = $("#convidado").typeahead("getActive");
         if (current) {
           this.convidado.pessoa_id = current.name == this.convidado.nome ? current.id : null;
@@ -285,28 +272,27 @@
           nome:this.convidado.nome,
           pessoa_id:this.convidado.pessoa_id
         };
-
         this.$http.post('/evento/'+this.evento.id+'/convidado/novo',parametros).then((response) => {
-          this.convidados.push(this.convidado);
+          this.convidado.id = response.data.data.id;
+          this.convidados.unshift(this.convidado);
           this.convidado = { id : null, nome :'',pessoa_id : null};
           this.success_message = response.data.log;
-          this.erros = [];
-
         },(response) => {//error
-          this.success_message = '';
+
           tempArray = [];
           $.each( response.data, function( key, value ) {
             tempArray.push(value[0]);
           });
           this.erros = tempArray;
         });
-
       },
       removeConvidado : function(convidado){
+        this.success_message = '';
+        this.erros = [];
 
-        this.$http.delete('/evento/'+this.evento.id+'/convidado/'+convidado.id+'/excluir').then((response) => {
+        this.$http.delete('/evento/'+this.evento.id+'/convidado/'+convidado.id+'/excluir').then((response) => {           
           this.convidados.$remove(convidado);
-          this.erros = [];
+          this.success_message = response.data.log;
         },(erro_response) => {
           tempArray = [];
           $.each( erro_response.data, function( key, value ) {

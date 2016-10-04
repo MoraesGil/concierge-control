@@ -17,6 +17,10 @@ class CondominoCtrl extends Controller
     $this->CondominioModel = $c;
     $this->UsuarioModel = $u;
     $this->pagLimit = 7;
+
+    if (!(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's')) {
+      \Redirect::to('home')->send();
+    }
   }
 
   public function index(Request $request){
@@ -69,7 +73,7 @@ class CondominoCtrl extends Controller
   }
 
   public function edit($id){
-
+ 
     $morador = $this->PessoaModel->moradores()->find($id);
 
     if (!$morador) {
@@ -146,7 +150,7 @@ class CondominoCtrl extends Controller
     return redirect()->back();
   }
 
- 
+
 
 
 }

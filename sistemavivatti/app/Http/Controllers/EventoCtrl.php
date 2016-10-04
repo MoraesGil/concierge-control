@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\EventoRequest;
 use App\Evento;
+use App\Pessoa;
 
 class EventoCtrl extends Controller
 {
-  public function __construct(Evento $s){
+  public function __construct(Evento $s, Pessoa $p){
     $this->EventoModel = $s;
+    $this->PessoaModel = $p;
     $this->pagLimit = 5;
   }
 
@@ -20,8 +22,8 @@ class EventoCtrl extends Controller
 
     if ($filtro) {
       $retorno =   $this->EventoModel
-      ->where("titulo", "LIKE", "%$filtro%")
-      ->orWhere("descricao", "LIKE", "%$filtro%")
+      ->where("data_entrada", "LIKE", "%$filtro%")
+      ->orWhere("data_saida", "LIKE", "%$filtro%")
       ->orderBy('id', 'DESC');
 
       if (!(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's' )) {
@@ -91,7 +93,6 @@ class EventoCtrl extends Controller
       return redirect('eventos')->withErrors(['Você não tem permissão para editar eventos']);
     }
 
-
     $evento = $this->EventoModel->find($id);
     if (!$evento) {
       return redirect('eventos');
@@ -124,5 +125,35 @@ class EventoCtrl extends Controller
     }
   }
 
+  public function getVisitantes(Request $request){
 
+    $filtro = $request->exists('busca') ? $request->get('busca') : '';
+
+    $retorno = $this->PessoaModel->visitantes()
+    ->orderBy('nome', 'ASC')
+    ->where("nome", "LIKE", "%$filtro%")
+    ->limit(50)
+    ->select('id','nome')
+    ->get();
+
+    $data_transformed =  array_map([$this, 'transform_data'], $retorno->toArray());
+
+    return $data_transformed;
+  }
+  private function transform_data($obj){
+
+    //placa
+    if (isset($obj["nome"])) {
+      return [
+        'id'=>$obj['id'],
+        'name'=>$obj["nome"]
+      ];
+
+    }
+    //placa
+    return [
+      'id'=>$obj['id'],
+      'name'=>$obj["placa"]
+    ];
+  }
 }

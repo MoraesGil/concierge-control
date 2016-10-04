@@ -61,7 +61,10 @@
                       <th>Cod</th>
                       <th>Nome</th>
                       <th class="text-center"> Qtd. Prestadores </th>
-                      <th class="text-center"> Opções </th>
+                      @if( auth()->user()->permissao == 'a' || auth()->user()->permissao == 's')
+                        <th class="text-center"> Opções </th>
+                      @endif
+
                     </tr>
                   </thead>
                   <tbody>
@@ -80,13 +83,16 @@
                             </a>
                           @endif
                         </td>
-                        <td class="text-center">
-                          <a href="{{url('servico/'.$servico->id.'/editar')}}" class="btn btn-default btn-xs"> <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Alterar"></i></a>
+                        @if( auth()->user()->permissao == 'a' || auth()->user()->permissao == 's')
+                          <td class="text-center">
+                            <a href="{{url('servico/'.$servico->id.'/editar')}}" class="btn btn-default btn-xs"> <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Alterar"></i></a>
 
-                          <a @click.prevent="excluir('{{$servico->id}}')" href="#" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
-                            <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
-                          </a>
-                        </td>
+                            <a @click.prevent="excluir('{{$servico->id}}')" href="#" class="btn btn-default btn-xs delete_row" data-toggle="confirmation" data-placement="bottom" data-original-title="" title="">
+                              <i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
+                            </a>
+                          </td>  
+                        @endif
+
                       </tr>
                     @endforeach
                   </tbody>

@@ -7,15 +7,26 @@
   <div class="right_col" role="main" id="app">
     <div class="row top_tiles" style="margin: 10px 0;">
       <div class="col-md-3 col-sm-3 col-xs-6 tile">
-        <span>Total Pessoas</span>
-        <h2>{{$total_pessoas}}</h2>
+        @if(auth()->user()->permissao == 'm')
+          <span>Total Dependentes</span>
+          <h2>{{count(auth()->user()->dados_pessoais->dependentes)}}</h2>
+        @else
+          <span>Total Pessoas</span>
+          <h2>{{$total_pessoas}}</h2>
+        @endif
         <span class="sparkline_one" style="height: 160px;">
           <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
         </span>
       </div>
       <div class="col-md-3 col-sm-3 col-xs-6 tile">
-        <span>Moradores</span>
-        <h2>{{$total_moradores}}</h2>
+        @if(auth()->user()->permissao == 'm')
+          <span>Suas Solicitações</span>
+          <h2>{{count(auth()->user()->solicitacoes)}}</h2>
+        @else
+          <span>Moradores</span>
+          <h2>{{$total_moradores}}</h2>
+        @endif
+
         <span class="sparkline_one" style="height: 160px;">
           <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
         </span>
@@ -88,7 +99,7 @@
                                     @endif
                                   </a>
                                 </div>
-                                <p class="excerpt">{{$recado->detalhes}}
+                                <p class="excerpt">{{$recado->descricao}}
                                 </p>
                               </div>
                             </div>
@@ -108,19 +119,19 @@
   </div>
 
   <div id="fullCalModal" class="modal fade">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
-                  <h4 id="modalTitle" class="modal-title"></h4>
-              </div>
-              <div id="modalBody" class="modal-body"></div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                  <button class="btn btn-default"><a id="eventUrl" href="{{url('/eventos')}}" target="_blank">Ver nos eventos</a></button>
-              </div>
-          </div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+          <h4 id="modalTitle" class="modal-title"></h4>
+        </div>
+        <div id="modalBody" class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <button class="btn btn-default"><a id="eventUrl" href="{{url('/eventos')}}" target="_blank">Ver nos eventos</a></button>
+        </div>
       </div>
+    </div>
   </div>
 @endsection
 

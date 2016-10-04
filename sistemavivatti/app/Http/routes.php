@@ -123,6 +123,7 @@ Route::group(['middleware'=>'auth'], function () {
   Route::get('/evento/{id}/editar','EventoCtrl@edit');//form
   Route::put('/evento/{id}/editar','EventoCtrl@update');//grava
   Route::get('/evento/{id}/excluir','EventoCtrl@destroy');//func
+  Route::get('/evento/getvisitantes','EventoCtrl@getVisitantes');//list
 
   // ROTAS Convidados evento
   Route::get('/evento/{evento_id}/convidados','ConvidadoCtrl@index');//list

@@ -17,6 +17,10 @@ class PorteiroCtrl extends Controller
     $this->CondominioModel = $c;
     $this->UsuarioModel = $u;
     $this->pagLimit = 7;
+
+    if (auth()->user()->permissao == 'm' || auth()->user()->permissao == 'p') {
+      \Redirect::to('home')->send();
+    }
   }
 
   public function index(Request $request){

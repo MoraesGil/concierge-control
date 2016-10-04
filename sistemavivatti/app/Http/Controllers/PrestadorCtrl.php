@@ -39,11 +39,16 @@ class PrestadorCtrl extends Controller
 
 
   public function create(){
+    if (auth()->user()->permissao == 'm') {
+      \Redirect::to('home')->send();
+    }
     return view('prestadores.form',['servicos'=>$this->ServicoModel->lists('nome','id')]);
   }
 
   public function store(PrestadorRequest $request){
-
+    if (auth()->user()->permissao == 'm') {
+      \Redirect::to('home')->send();
+    }
     //grava dados pessoais
     if ($request->get('tipo')=='pj') {
       $novo_prestador = $this->PessoaModel->create($request->only('nome', 'cnpj'));
@@ -65,6 +70,9 @@ class PrestadorCtrl extends Controller
   }
 
   public function edit($id){
+    if (!(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's')) {
+      \Redirect::to('home')->send();
+    }
 
     $prestador = $this->PessoaModel->prestadores()->find($id);
 
@@ -82,7 +90,9 @@ class PrestadorCtrl extends Controller
 
 
   public function update(PrestadorRequest $request, $id){
-
+    if (!(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's')) {
+      \Redirect::to('home')->send();
+    }
     $prestador = $this->PessoaModel->prestadores()->find($id);
     if (!$prestador) {
       return redirect('prestadores');
@@ -106,7 +116,10 @@ class PrestadorCtrl extends Controller
   }
 
   public function destroy($id){
-    // usuario com pessoa de id = $id
+    if (!(auth()->user()->permissao == 'a' || auth()->user()->permissao == 's')) {
+      \Redirect::to('home')->send();
+    }
+
     $prestador =  $this->PessoaModel->find($id);
     if (!$prestador) {
       return redirect('prestadores');
@@ -119,7 +132,6 @@ class PrestadorCtrl extends Controller
 
   public function getNota($prestador_id){
     $prestador =  $this->PessoaModel->find($prestador_id);
-
     return [
       'id'=>$prestador->id,
       'nome'=>$prestador->nome,
@@ -164,8 +176,5 @@ class PrestadorCtrl extends Controller
     $pessoa_retorno->servicos_id = $pessoa->servicos_prestados->pluck('id');
 
     return $pessoa_retorno;
-  }
-
-
-
+  } 
 }

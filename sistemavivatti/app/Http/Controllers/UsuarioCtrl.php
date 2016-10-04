@@ -21,7 +21,7 @@ class UsuarioCtrl extends Controller
     $calendar = \Calendar::addEvents($eventos->all())->setOptions([ //set fullcalendar options
       'header'=> [
         'right'=> 'prev,next today',
-      ] 
+      ]
     ]);
 
     $data = array(

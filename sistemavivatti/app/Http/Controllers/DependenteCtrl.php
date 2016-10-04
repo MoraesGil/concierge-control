@@ -14,6 +14,9 @@ class DependenteCtrl extends Controller
     $this->PessoaModel = $p;
     $this->pagLimit = 10;
 
+    if (auth()->user()->permissao == 'p') {
+      \Redirect::to('home')->send();
+    }
   }
 
   public function index($morador_id, Request $request){
@@ -49,7 +52,7 @@ class DependenteCtrl extends Controller
   }
 
   public function store($morador_id,DependenteRequest $request){
-    
+
     $morador = $this->PessoaModel->moradores()->find($morador_id);
 
     if (!$morador) {

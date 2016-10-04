@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <!-- Meta, title, CSS, favicons, etc. -->
@@ -55,7 +55,6 @@
             </div>
           </div>
           <!-- /menu profile quick info -->
-
           <br />
 
           <!-- sidebar menu -->
@@ -67,37 +66,37 @@
                   <ul class="nav child_menu">
                     <li><a href="{{url('/home')}}">Inicio</a></li>
                     <li><a href="{{url('/sindicos')}}">Sindícos</a></li>
+                    <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                   </ul>
                 </li>
-                <li><a><i class="fa fa-male"></i> Síndico <span class="fa fa-chevron-down"></span></a>
+                <li><a><i class="fa fa-male"></i> Pessoas <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
+                    {{-- <li><a href="{{url('/home')}}">Inicio</a></li> --}}
                     <li><a href="{{url('/moradores')}}">Moradores</a></li>
                     <li><a href="{{url('/porteiros')}}">Porteiros</a></li>
-                    <li><a href="{{url('/eventos')}}">Reservas de Salão</a></li>
-                    <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
-                    <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
-                    <li><a href="{{url('/servicos')}}">Serviços</a></li>
                     <li><a href="{{url('/prestadores')}}">Prestadores de Serviços</a></li>
-                    <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
                   </ul>
                 </li>
                 <li><a><i class="fa fa-map-marker"></i> Portaria <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
+                    {{-- <li><a href="{{url('/home')}}">Inicio</a></li> --}}
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
                     <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
+                    <li><a href="{{url('/solicitacoes')}}">Solicitações</a></li>
                     <li><a href="{{url('/servicos')}}">Serviços</a></li>
                     <li><a href="{{url('/prestadores')}}">Prestadores de Serviços</a></li>
-                    <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
                   </ul>
                 </li>
                 <li>
-                  <a><i class="fa fa-table"></i> Condôminos <span class="fa fa-chevron-down"></span></a>
+                  <a><i class="fa fa-table"></i> Agênda e Recados <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
                     <li><a href="{{url('/eventos')}}">Reservas de Salão</a></li>
                     <li><a href="{{url('/portaria')}}">Livro de Acesso</a></li>
-                    <li><a href="{{url('/contrato')}}">Download Contrato</a></li>
+                    <li><a href="{{url('/recados')}}">Mural de Recados</a></li>
                     <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
-                    <li><a href="javascript:;">2ª via Boleto (OFF)</a></li>
+                    {{-- <li><a href="{{url('/contrato')}}">Download Contrato</a></li> --}}
+                    <li><a href="{{url('/solicitacoes')}}">Solicitacoes</a></li>
+                    {{-- <li><a href="javascript:;">2ª via Boleto (OFF)</a></li> --}}
                   </ul>
                 </li>
               </ul>
